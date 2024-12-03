@@ -3,7 +3,8 @@
             [compojure.route :as route]
             [ring.util.response :as response]
             [rlc.lightcone.routes.events :refer [event-routes]]
-            [rlc.lightcone.routes.person :refer [person-routes]]))
+            [rlc.lightcone.routes.person :refer [person-routes]]
+            [rlc.lightcone.routes.auth :refer [auth-routes]]))
 
 (defroutes app-routes
   ;; Static routes
@@ -15,6 +16,7 @@
   ;; API routes from other namespaces
   event-routes
   person-routes
+  auth-routes
 
   ;; Static resources and fallback
   (route/resources "/")
