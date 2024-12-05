@@ -1,12 +1,15 @@
 (ns rlc.lightcone.server
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
-            [rlc.lightcone.routes.core :refer [app-routes]])) ;; your existing model namespace
+            [rlc.lightcone.routes.core :refer [app-routes]]
+            [ring.middleware.cors :refer [wrap-cors]])) ;; your existing model namespace
 
 
 ;; Add middleware
 (def app
   (-> app-routes
+      (wrap-cors :access-control-allow-origin [#"http://localhost:3003"]
+                 :access-control-allow-methods [:get :put :post :delete :options])
       wrap-json-body
       wrap-json-response))
 
@@ -16,6 +19,7 @@
                           :join? false
                           :max-header-size 65536
                           }))
+
 
 (comment
   ;; Start server from REPL

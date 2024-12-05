@@ -1,0 +1,1 @@
+["^ ","~$app",["^ ","~:row",9,"~:col",1,"~:name","^0","~:ns","~$rlc.lightcone.server","~:top-ns","^5"],"~$start-server",["^ ","^1",17,"^2",1,"~:fixed-arities",["~#set",[1]],"^3","^7","^4","^5","^6","^5","~:type","~:fn"],"~$server",["^ ","^1",26,"^2",3,"^3","^<","^4","^5","^6","^5"],"~:filename","/home/marc/Relica/labs/rlc_lightcone/lightcone_clj/src/clj/rlc/lightcone/server.clj"]

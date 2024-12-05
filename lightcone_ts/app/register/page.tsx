@@ -18,7 +18,7 @@ const RegisterPage = () => {
 
     try {
       // Send registration request to your Clojure backend
-      const response = await fetch("/api/register", {
+      const response = await fetch("http://localhost:3002/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),

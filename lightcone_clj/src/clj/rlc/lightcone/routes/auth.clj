@@ -1,5 +1,5 @@
 (ns rlc.lightcone.routes.auth
-  (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
+  (:require [compojure.core :refer [defroutes context GET POST OPTIONS PUT DELETE]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
             [rlc.lightcone.calendar :as calendar]
@@ -9,6 +9,7 @@
                                         create-user]]))
 
 (defroutes auth-routes
+  (OPTIONS "/register" _ (response/response nil))
   (POST "/register" request
     (let [username (get-in request [:body "username"])
           password (get-in request [:body "password"])]
@@ -21,9 +22,13 @@
           (create-user username password)
           {:status 201 :body "User created successfully"}))))
 
+  (OPTIONS "/login" _ (response/response nil))
   (POST "/login" request
     (let [username (get-in request [:body "username"])
           password (get-in request [:body "password"])]
+      (tap> "LOGIN")
+      (tap> username)
+      (tap> password)
       (if-let [user (authenticate-user username password)]
         (let [token (generate-token user)]
           {:status 200 :body {:token token}})
