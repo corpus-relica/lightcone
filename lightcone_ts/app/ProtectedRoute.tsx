@@ -14,10 +14,6 @@ export const ProtectedRoute = ({ children }) => {
     }
   }, [isAuthenticated]);
 
-  // if (!isAuthenticated) {
-  //   router.push('/login');
-  //   return null;
-  // }
 
   return children;
 };

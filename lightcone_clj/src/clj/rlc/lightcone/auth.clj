@@ -37,9 +37,12 @@
 
 
 (def secret "your-secret-key")
+;; (def token-expiration-time (* 60 60)) ; 1 hour in seconds
+(def token-expiration-time 60) ; 1 minute in seconds
 
 (defn generate-token [user]
-  (let [claims {:user (:username user)}]
+  (let [claims {:user (:username user)
+                :exp (+ (System/currentTimeMillis) (* token-expiration-time 1000))}]
     (jwt/sign claims secret)))
 
 (defn validate-token [token]
@@ -48,7 +51,23 @@
     (catch Exception _
       false)))
 
-
+(defn is-authenticated? [headers]
+  (let [header-value (get headers "authorization")
+        token (when header-value (second (re-find #"Bearer\s+(.+)" header-value)))]
+    (tap> "IS AUTHENTICATED")
+    (tap> token)
+    (when token
+      (try
+        (let [claims (jwt/unsign token secret)]
+          (tap> "CLAIMS")
+          (tap> claims)
+          (tap> [(System/currentTimeMillis) "<" (:exp claims)])
+          (tap> (< (System/currentTimeMillis) (:exp claims)))
+          (if (< (System/currentTimeMillis) (:exp claims))
+            :yes
+            :token-expired))
+        (catch Exception _
+          :no)))))
 
 (def session-auth-backend
   (session-backend {:unauthorized-handler (constantly {:status 401 :body "Unauthorized"})}))

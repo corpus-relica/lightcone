@@ -1,11 +1,15 @@
 'use client';
 import { createContext, useEffect, useState } from 'react';
 
+export const AuthContext = createContext({ isAuthenticated: false, setIsAuthenticated:()=>{},login: () => {}, logout: () => {}});
 
-export const AuthContext = createContext({ isAuthenticated: false, login: () => {}, logout: () => {}});
+export const AuthProvider = (props) => {
+  console.log("AUTH PROVIDER");
+  console.log(props.isAuthenticated);
 
-export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { children } = props;
+
+  const [isAuthenticated, setIsAuthenticated] = useState(props.isAuthenticated);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

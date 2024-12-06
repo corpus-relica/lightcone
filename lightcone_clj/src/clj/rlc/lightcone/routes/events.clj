@@ -2,7 +2,8 @@
   (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
-            [rlc.lightcone.calendar :as calendar]))
+            [rlc.lightcone.calendar :as calendar]
+            [rlc.lightcone.auth :as auth]))
 
 (defroutes event-routes
   (context "/api/event/title" []
@@ -33,10 +34,17 @@
           (tap> [event-id new-participants])
         (response/response (set new-participants)))))
 
+  ;; (context "/api/events" []
+  ;;   (GET "/" []
+  ;;     (response/response
+  ;;       {:events (calendar/fetch-all-events)}))
+
   (context "/api/events" []
-    (GET "/" []
-      (response/response
-        {:events (calendar/fetch-all-events)}))
+    (GET "/" request
+         (case (auth/is-authenticated? (:headers request))
+           :yes (response/response {:events (calendar/fetch-all-events)})
+           :token-expired (response/status 419)
+           :no (response/status 401))))
 
     ;; (PUT "/" {body :body}
     ;;   (let [calendar-event (:event (keywordize-keys body))
@@ -61,4 +69,4 @@
           (response/response {:status "ok"})))
 
 
-      )))
+      ))

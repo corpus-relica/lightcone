@@ -38,8 +38,9 @@ const LoginPage = () => {
       console.log("RESPONSE", response.ok)
 
       if (response.ok) {
-        console.log("RESPONSible", response)
-        login();
+        const data = await response.json();
+        console.log("DATA", data)
+        login(data.token);
         // Login successful, redirect to dashboard or update authentication state
       } else {
         // Login failed, display error message

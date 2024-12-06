@@ -1,5 +1,6 @@
 "use client";
 
+import React, {useEffect, useState} from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -26,13 +27,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("RootLayout");
+
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     setIsAuthenticated(true);
+  //   }
+  // }, []);
+
+  const isAuthenticated = localStorage.getItem('token') ? true : false;
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-    <AuthProvider>
+    <AuthProvider isAuthenticated={isAuthenticated}>
         {children}
     </AuthProvider>
       </body>
