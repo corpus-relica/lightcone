@@ -42,7 +42,7 @@
   (context "/api/events" []
     (GET "/" request
          (case (auth/is-authenticated? (:headers request))
-           :yes (response/response {:events (calendar/fetch-all-events)})
+           :yes (response/response (calendar/fetch-all-events))
            :token-expired (response/status 419)
            :no (response/status 401))))
 

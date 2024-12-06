@@ -4,17 +4,18 @@ import { useEffect, useState, useContext } from "react";
 import { ProtectedRoute } from '../ProtectedRoute';
 import { Button } from "@/components/ui/button";
 import { AuthContext } from '../AuthContext';
+import EventsList from "@/components/EventsList";
 import { getEvents } from "../api";
 
 const Dashboard = () => {
 
+  const [events, setEvents] = useState([]);
   const { logout} = useContext(AuthContext);
 
   useEffect(() => {
-    console.log("GET EVENTS?")
     getEvents().then((data) => {
-      console.log('EVENTS DATA')
-      console.log(data);
+      console.log(data.data);
+      setEvents(data.data);
     }).catch((error) => {
        if (error.response && error.response.status === 419) {
          // Token has expired, log the user out
@@ -27,14 +28,14 @@ const Dashboard = () => {
 
   return (
     <>
-    <ProtectedRoute>
-      <h1>Dashboard</h1>
-      {/* Dashboard content */}
-
+      <ProtectedRoute>
+        <h1>Dashboard</h1>
+        <p>Welcome to the dashboard</p>
+        <EventsList events={events}/>
         <Button type="submit" onClick={logout}>
           logout
         </Button>
-    </ProtectedRoute>
+      </ProtectedRoute>
     </>
   );
 };

@@ -28,15 +28,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     setIsAuthenticated(true);
-  //   }
-  // }, []);
-
   const isAuthenticated = localStorage.getItem('token') ? true : false;
 
   return (
