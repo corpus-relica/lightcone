@@ -1,13 +1,24 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState, useContext } from "react";
-import Link from "next/link";
 import { AuthContext } from '../AuthContext';
 import { useRouter } from 'next/navigation';
 
-const LoginPage = () => {
+import Link from "next/link"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+export default function LoginForm() {
+
   const { isAuthenticated , login} = useContext(AuthContext);
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -55,35 +66,62 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <h4>Username</h4>
-        <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <h4>Password</h4>
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p className="error">{error}</p>}
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Loading..." : "Login"}
-        </Button>
-      </form>
-      <p>
-        Don't have an account? <Link href="/register">Register</Link>
-      </p>
-    </>
-  );
-};
+    <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>
+          Enter your username below to login to your account
+        </CardDescription>
+      </CardHeader>
 
-export default LoginPage;
+
+      <CardContent>
+        <form onSubmit={handleSubmit}>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link href="#" className="ml-auto inline-block text-sm underline">
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && <p className="error">{error}</p>}
+
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Loading..." : "Login"}
+            </Button>
+            {/*<Button variant="outline" className="w-full">
+              Login with Google
+            </Button>*/}
+          </div>
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="underline">
+              Sign up
+            </Link>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  )
+}
