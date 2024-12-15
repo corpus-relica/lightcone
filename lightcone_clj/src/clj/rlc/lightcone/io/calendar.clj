@@ -1,9 +1,9 @@
-(ns rlc.lightcone.calendar
+(ns rlc.lightcone.io.calendar
   (:require [clojure.spec.alpha :as s]
-            [rlc.clarity.occurrence]
+            ;; [rlc.clarity.occurrence]
             ;;[rlc.clarity.aspect :as aspect]
-            [rlc.lightcone.contacts :refer  [get-person-name]]
-            [rlc.lightcone.archivist :refer [reserve-uid
+            [rlc.lightcone.io.contacts :refer  [get-person-name]]
+            [rlc.lightcone.io.archivist :refer [reserve-uid
                                              submit-binary-facts
                                              get-event
                                              get-all-events

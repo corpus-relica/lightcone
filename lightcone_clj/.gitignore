@@ -19,6 +19,7 @@ resources/public/js/
 .shadow-cljs/
 .lsp/
 .clj-kondo/
+.clj-kondo/*
 profiles.clj
 .calva/
 

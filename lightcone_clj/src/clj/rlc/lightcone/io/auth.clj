@@ -1,4 +1,4 @@
-(ns rlc.lightcone.auth
+(ns rlc.lightcone.io.auth
   (:require [buddy.auth :refer [authenticated?]]
             [buddy.auth.middleware :refer [wrap-authentication]]
             [buddy.auth.backends.session :refer [session-backend]]

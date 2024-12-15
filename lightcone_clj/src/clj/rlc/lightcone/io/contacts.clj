@@ -1,4 +1,4 @@
-(ns rlc.lightcone.contacts
+(ns rlc.lightcone.io.contacts
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]

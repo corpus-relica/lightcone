@@ -1,4 +1,4 @@
-(ns rlc.lightcone.archivist
+(ns rlc.lightcone.io.archivist
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
