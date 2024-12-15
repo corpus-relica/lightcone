@@ -20,6 +20,7 @@ resources/public/js/
 .lsp/
 .clj-kondo/
 profiles.clj
+.calva/
 
 # Build artifacts
 pom.xml
