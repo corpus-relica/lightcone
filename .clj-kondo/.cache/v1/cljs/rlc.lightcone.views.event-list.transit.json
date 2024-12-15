@@ -1,0 +1,1 @@
+["^ ","~$event-list",["^ ","~:row",7,"~:col",1,"~:fixed-arities",["~#set",[0]],"~:name","^0","~:ns","~$rlc.lightcone.views.event-list","~:top-ns","^7","~:arities",["^ ","~i0",["^ ","~:ret","~:vector","~:arglist-str","[]"]],"~:type","~:fn"],"~:filename","/home/marc/Relica/labs/rlc_lightcone/lightcone_clj/src/cljs/rlc/lightcone/views/event_list.cljs"]

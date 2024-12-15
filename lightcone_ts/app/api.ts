@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+console.log("MUTHER FUCKING TOKEN",localStorage.getItem('token'));
+
 const authAxios = () => axios.create({
-  baseURL: 'http://localhost:3002',
+  baseURL: 'http://localhost:3003',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },

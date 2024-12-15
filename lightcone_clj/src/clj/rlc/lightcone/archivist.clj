@@ -84,13 +84,15 @@
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
 
-(defn get-all-events []
+(defn get-all-events [token]
+  (tap> "GETTING ALL EVENTS")
   (try
     (let [response (http/get (str service-url "/fact/classified")
                              {:query-params {:uid "1000000395"
                                              :recursive false}
                               :throw-exceptions false
-                              :as :json})]
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
       (case (:status response)
         200 (let [foo (map (fn [event]
                              {:uid (:lh_object_uid event)
@@ -98,18 +100,20 @@
                               :event-type :event})
                            (:body response))]
               (response/response foo))
+        401 (response/status 401 {:error "Unauthorized"})
         404 (response/not-found {:error "No events found"
                                  :details (:body response)})
         (do
           ;; (log/error "Failed to fetch events:" response)
           (response/status 500 {:error "Failed to fetch events data"}))))))
 
-(defn get-event [uid]
+(defn get-event [token uid]
   (try
     (let [response (http/get (str service-url "/fact/classificationFact")
                              {:query-params {:uid uid}
                               :throw-exceptions false
-                              :as :json})]
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
       (case (:status response)
         200 (let [body (first (:body response))
                   event {:uid (:lh_object_uid body)
@@ -135,13 +139,14 @@
 
 (defn query-service
   "Makes a query to the service and handles common response patterns"
-  [query-string transform-fn]
+  [token query-string transform-fn]
   (try
     (let [response (http/post (str service-url "/query/queryString")
                               {:body (json/write-str {:queryString query-string})
                                :content-type :json
                                :throw-exceptions false
-                               :as :json})]
+                               :as :json
+                               :headers {"Authorization" (str "Bearer " token)}})]
       (case (:status response)
         (200 201) (-> response
                       :body
@@ -156,8 +161,9 @@
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
 
-(defn get-event-time-value [uid]
+(defn get-event-time-value [token uid]
   (query-service
+   token
    (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
    (fn [facts]
      (let [time (:rh_object_name (second facts))]
@@ -166,24 +172,27 @@
        (tap> time)
        time))))
 
-(defn get-event-time [uid]
+(defn get-event-time [token uid]
   (query-service
+   token
    (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
    (fn [facts]
      facts)))
 
-(defn get-event-participants [uid]
+(defn get-event-participants [token uid]
   (tap> "GETTING EVENT PARTICIPANTS")
   (tap> uid)
   (query-service
+   token
    (str uid " > 5644 > ?10.who")
    (fn [facts]
      (map :rh_object_uid facts))))
 
-(defn get-event-note-value [uid]
+(defn get-event-note-value [token uid]
   (tap> "GETTING EVENT NOTE")
   (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
   (query-service
+   token
    (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
    (fn [facts]
      (tap> "NOTE FACTS")
@@ -192,10 +201,11 @@
        nil
        (:full_definition (second facts))))))
 
-(defn get-event-note [uid]
+(defn get-event-note [token uid]
   (tap> "GETTING EVENT NOTE")
   (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
   (query-service
+   token
    (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
    (fn [facts]
      (tap> "NOTE FACTS, FOR REAL")

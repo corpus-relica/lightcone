@@ -269,11 +269,12 @@
 
     clarity-event))
 
-(defn fetch-all-events []
-  (let [events (:body (get-all-events))
+(defn fetch-all-events [token]
+  (tap> "FETCH ALL EVENTS OUTER")
+  (let [events (:body (get-all-events token))
         ;; Use mapv to force sequential processing
         times (doall (mapv #(try
-                              (:body (get-event-time-value (:uid %)))
+                              (:body (get-event-time-value token (:uid %)))
                               (catch Exception e
                                 (tap> (str "Failed to get time for " (:uid %)))
                                 nil))
@@ -282,7 +283,7 @@
         ;; Add delay between calls if needed
         ;; _ (Thread/sleep 100)
         participants (doall (mapv #(try
-                                     (:body (get-event-participants (:uid %)))
+                                     (:body (get-event-participants token (:uid %)))
                                      (catch Exception e
                                        (tap> (str "Failed to get participants for " (:uid %)))
                                        nil))
@@ -290,32 +291,32 @@
         _ (tap> "FETCH ALL PARTICIPANTS")
         _ (tap> participants)
         notes (doall (mapv #(try
-                              (:body (get-event-note-value (:uid %)))
+                              (:body (get-event-note-value token (:uid %)))
                               (catch Exception e
                                 (tap> (str "Failed to get note for " (:uid %)))
                                 nil))
                            events))
         final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)]
-    (tap> "FETCH ALL EVENTS")
+    (tap> "FETCH ALL EVENTS INNER")
     ;; (tap> times)
     ;; (tap> events)
     (tap> final-events)
     final-events))
 
-(defn fetch-event [uid]
-  (let [event (:body (get-event uid))
+(defn fetch-event [token uid]
+  (let [event (:body (get-event token uid))
         time (try
-               (:body (get-event-time-value uid))
+               (:body (get-event-time-value token uid))
                (catch Exception e
                  (tap> (str "Failed to get time for " uid))
                  nil))
         participants (try
-                       (:body (get-event-participants uid))
+                       (:body (get-event-participants token uid))
                        (catch Exception e
                          (tap> (str "Failed to get participants for " uid))
                          nil))
         note (try
-               (:body (get-event-note-value uid))
+               (:body (get-event-note-value token uid))
                (catch Exception e
                  (tap> (str "Failed to get note for " uid))
                  nil))]

@@ -9,6 +9,7 @@
 
 (def base-url "http://localhost:3000")
 (def login-url (str base-url "/auth/login"))
+(def validate-url (str base-url "/auth/validate"))
 
 (def users (atom []))
 
@@ -39,7 +40,6 @@
                                :accept :json
                                :throw-exceptions false
                                :as :json})]
-      (tap> response)
       (if (= (:status response) 200)
         (:access_token (:body response))
         false))
@@ -63,23 +63,26 @@
     (catch Exception _
       false)))
 
-(defn is-authenticated? [headers]
-  (let [header-value (get headers "authorization")
-        token (when header-value (second (re-find #"Bearer\s+(.+)" header-value)))]
-    (tap> "IS AUTHENTICATED")
-    (tap> token)
-    (when token
-      (try
-        (let [claims (jwt/unsign token secret)]
-          (tap> "CLAIMS")
-          (tap> claims)
-          (tap> [(System/currentTimeMillis) "<" (:exp claims)])
-          (tap> (< (System/currentTimeMillis) (:exp claims)))
-          (if (< (System/currentTimeMillis) (:exp claims))
-            :yes
-            :token-expired))
-        (catch Exception _
-          :no)))))
+(defn is-authenticated? [token]
+  (tap> "IS AUTHENTICATED !!!!!!!!!!!!1")
+  (tap> token)
+  (if-not token
+    {:authenticated false :reason :no-token}
+    (try
+      (let [response (http/post validate-url
+                                {:headers {"Authorization" (str "Bearer " token)}
+                                 :throw-exceptions false
+                                 :as :json})]
+        (tap> "VALIDATE TOKEN !!!!!!!!!!!!1")
+        (tap> response)
+        (case (:status response)
+          200 {:authenticated true}
+          201 {:authenticated true}
+          401 {:authenticated false :reason :invalid-token}
+          419 {:authenticated false :reason :token-expired}
+          {:authenticated false :reason :unknown}))
+      (catch Exception e
+        {:authenticated false :reason :error}))))
 
 (def session-auth-backend
   (session-backend {:unauthorized-handler (constantly {:status 401 :body "Unauthorized"})}))
