@@ -4,7 +4,11 @@
             [buddy.auth.backends.session :refer [session-backend]]
             [buddy.auth.backends.token :refer [jwe-backend]]
             [buddy.hashers :as hashers]
-            [buddy.sign.jwt :as jwt]))
+            [buddy.sign.jwt :as jwt]
+            [clj-http.client :as http]))
+
+(def base-url "http://localhost:3000")
+(def login-url (str base-url "/auth/login"))
 
 (def users (atom []))
 
@@ -25,15 +29,23 @@
     ;; Store the user in the database
     (db-create-user! {:username username :password hashed-password})))
 
-(defn authenticate-user [username password]
-  ;; Retrieve the user from the database
-  (if-let [user (db-get-user-by-username username)]
-    ;; Verify the password
-    (if (hashers/check password (:password user))
-      user
-      false)
-    false))
 
+(defn authenticate-user [username password]
+  (try
+    (let [response (http/post login-url
+                              {:form-params {:username username
+                                             :password password}
+                               :content-type :json
+                               :accept :json
+                               :throw-exceptions false
+                               :as :json})]
+      (tap> response)
+      (if (= (:status response) 200)
+        (:access_token (:body response))
+        false))
+    (catch Exception e
+      (println "Authentication error:" (.getMessage e))
+      false)))
 
 
 (def secret "your-secret-key")

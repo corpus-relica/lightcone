@@ -2,8 +2,7 @@
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
-            [clojure.data.json :as json]
-            ))
+            [clojure.data.json :as json]))
 
 (def ^:private service-url "http://localhost:3000")
 
@@ -30,15 +29,15 @@
 (defn transform-keys [m]
   (reduce-kv (fn [m k v]
                (let [new-k (if (keyword? k)
-                            (keyword (kebab->snake k))
-                            k)]
+                             (keyword (kebab->snake k))
+                             k)]
                  (assoc m new-k
-                   (cond
-                     (map? v) (transform-keys v)
-                     (sequential? v) (map #(if (map? %)
-                                           (transform-keys %)
-                                           %) v)
-                     :else v))))
+                        (cond
+                          (map? v) (transform-keys v)
+                          (sequential? v) (map #(if (map? %)
+                                                  (transform-keys %)
+                                                  %) v)
+                          :else v))))
              {} m))
 
 (defn submit-binary-facts [facts]
@@ -47,15 +46,15 @@
     (let [transformed-facts (map transform-keys facts)  ;; Transform before serializing
           _ (tap> (str "Transformed facts:" (json/write-str transformed-facts)))
           response (http/post (str service-url "/fact/facts")
-                            {:body (json/write-str transformed-facts)
-                             :content-type :json
-                             :throw-exceptions false
-                             :as :json})]
+                              {:body (json/write-str transformed-facts)
+                               :content-type :json
+                               :throw-exceptions false
+                               :as :json})]
       (case (:status response)
         200 (:body response)
         201 (:body response)
         404 (response/not-found {:error "No facts found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (do
           (tap> "FAILED TO SUBMIT FACTS")
           (tap> response)
@@ -78,7 +77,7 @@
       (case (:status response)
         200 (:body response)
         404 (response/not-found {:error "No event found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (response/status 500 {:error "Failed to delete facts"})))
     (catch Exception e
       (tap> "FAILED TO DELETE FACTS")
@@ -100,7 +99,7 @@
                            (:body response))]
               (response/response foo))
         404 (response/not-found {:error "No events found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (do
           ;; (log/error "Failed to fetch events:" response)
           (response/status 500 {:error "Failed to fetch events data"}))))))
@@ -112,7 +111,7 @@
                               :throw-exceptions false
                               :as :json})]
       (case (:status response)
-        200 (let [body (first(:body response))
+        200 (let [body (first (:body response))
                   event {:uid (:lh_object_uid body)
                          :title (:lh_object_name body)
                          :event-type :event
@@ -122,11 +121,11 @@
               (tap> event)
               (response/response event))
         404 (response/not-found {:error "No event found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (do
           ;; (log/error "Failed to fetch event:" response)
           (tap> "FAILED TO FETCH EVENT"
-          (tap> response))
+                (tap> response))
           (response/status 500 {:error "Failed to fetch event data"}))))
     (catch Exception e
       ;; (log/error e "Failed to connect to fact retrieval service")
@@ -139,10 +138,10 @@
   [query-string transform-fn]
   (try
     (let [response (http/post (str service-url "/query/queryString")
-                             {:body (json/write-str {:queryString query-string})
-                              :content-type :json
-                              :throw-exceptions false
-                              :as :json})]
+                              {:body (json/write-str {:queryString query-string})
+                               :content-type :json
+                               :throw-exceptions false
+                               :as :json})]
       (case (:status response)
         (200 201) (-> response
                       :body
@@ -150,7 +149,7 @@
                       transform-fn
                       response/response)
         404 (response/not-found {:error "No event found"
-                               :details (:body response)})
+                                 :details (:body response)})
         (response/status 500 {:error "Failed to fetch event data"})))
     (catch Exception e
       (tap> "FAILED TO QUERY SERVICE")
@@ -159,58 +158,57 @@
 
 (defn get-event-time-value [uid]
   (query-service
-    (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
-    (fn [facts]
-      (let [time (:rh_object_name (second facts))]
-        (tap> "TIME ------->")
-        (tap> facts)
-        (tap> time)
-        time))))
+   (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
+   (fn [facts]
+     (let [time (:rh_object_name (second facts))]
+       (tap> "TIME ------->")
+       (tap> facts)
+       (tap> time)
+       time))))
 
 (defn get-event-time [uid]
   (query-service
-    (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
-    (fn [facts]
-      facts)))
+   (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
+   (fn [facts]
+     facts)))
 
 (defn get-event-participants [uid]
   (tap> "GETTING EVENT PARTICIPANTS")
   (tap> uid)
   (query-service
-    (str uid " > 5644 > ?10.who")
-    (fn [facts]
-      (map :rh_object_uid facts))))
+   (str uid " > 5644 > ?10.who")
+   (fn [facts]
+     (map :rh_object_uid facts))))
 
 (defn get-event-note-value [uid]
   (tap> "GETTING EVENT NOTE")
   (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
   (query-service
-    (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
-    (fn [facts]
-      (tap> "NOTE FACTS")
-      (tap> facts)
-      (if (empty? facts)
-        nil
-        (:full_definition (second facts))))))
+   (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
+   (fn [facts]
+     (tap> "NOTE FACTS")
+     (tap> facts)
+     (if (empty? facts)
+       nil
+       (:full_definition (second facts))))))
 
 (defn get-event-note [uid]
   (tap> "GETTING EVENT NOTE")
   (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
   (query-service
-    (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
-    (fn [facts]
-      (tap> "NOTE FACTS, FOR REAL")
-      (tap> facts)
-      facts)))
+   (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
+   (fn [facts]
+     (tap> "NOTE FACTS, FOR REAL")
+     (tap> facts)
+     facts)))
 
 (defn get-participation-fact [lh-object-uid rh-object-uid]
   (query-service
-    (str lh-object-uid " > 5644 > " rh-object-uid)
-    (fn [facts]
-      (tap> "PARTICIPATION FACT")
-      (tap> facts)
-      (first facts)))
-  )
+   (str lh-object-uid " > 5644 > " rh-object-uid)
+   (fn [facts]
+     (tap> "PARTICIPATION FACT")
+     (tap> facts)
+     (first facts))))
 
 (defn get-person-name [uid]
   (try
@@ -222,7 +220,7 @@
         200 (let [person (first (:body response))]
               (response/response (:lh_object_name person)))
         404 (response/not-found {:error "No person found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (do
           ;; (log/error "Failed to fetch person:" response)
           (response/status 500 {:error "Failed to fetch person data"}))))
@@ -240,8 +238,7 @@
                 :rel-type-name "has as participant"
                 :rh-object-uid person-uid
                 :rh-object-name person-name}
-          response (submit-binary-facts [fact])
-         ]
+          response (submit-binary-facts [fact])]
       ;; (tap> "ADD PARTICIPANT RESPONSE")
       ;; (tap> response)
       response)
@@ -255,8 +252,7 @@
 (defn remove-participant [event-uid person-uid]
   (try
     (let [participation-fact-uid (get-in (get-participation-fact event-uid person-uid) [:body :fact_uid])
-          response (delete-facts [participation-fact-uid])
-         ]
+          response (delete-facts [participation-fact-uid])]
       ;; (tap> "REMOVE PARTICIPANT RESPONSE")
       ;; (tap> (first response))
       (first response))
@@ -279,7 +275,7 @@
       (case (:status response)
         200 (:body response)
         404 (response/not-found {:error "No event found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (response/status 500 {:error "Failed to rename event"})))
     (catch Exception e
       (tap> "FAILED TO RENAME EVENT")
@@ -288,7 +284,7 @@
 
 
 (defn update-definition [uid def]
-  (tap> "UPDATING DEFINITION" )
+  (tap> "UPDATING DEFINITION")
   (tap> uid)
   (tap> def)
   (try
@@ -304,7 +300,7 @@
       (case (:status response)
         200 (:body response)
         404 (response/not-found {:error "No event found"
-                                :details (:body response)})
+                                 :details (:body response)})
         (response/status 500 {:error "Failed to update definition"})))
     (catch Exception e
       (tap> "FAILED TO UPDATE DEFINITION")

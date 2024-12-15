@@ -4,11 +4,12 @@
             [rlc.lightcone.routes.core :refer [app-routes]]
             [ring.middleware.cors :refer [wrap-cors]])) ;; your existing model namespace
 
+(System/getenv "someshit")
 
 ;; Add middleware
 (def app
   (-> app-routes
-      (wrap-cors :access-control-allow-origin [#"http://localhost:3003"]
+      (wrap-cors :access-control-allow-origin [#"http://localhost:3004"]
                  :access-control-allow-methods [:get :put :post :delete :options])
       wrap-json-body
       wrap-json-response))
@@ -23,7 +24,7 @@
 
 (comment
   ;; Start server from REPL
-  (def server (start-server 3002))
+  (def server (start-server 3003))
 
   (.stop server)
 

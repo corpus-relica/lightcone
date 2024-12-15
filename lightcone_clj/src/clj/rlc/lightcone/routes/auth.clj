@@ -30,8 +30,10 @@
       (tap> username)
       (tap> password)
       (if-let [user (authenticate-user username password)]
-        (let [token (generate-token user)]
-          {:status 200 :body {:token token}})
+        (do
+          (tap> "FONOFDSFDSFDSFDSF")
+          (tap> user)
+          {:status 200 :body {:token user}})
         {:status 401 :body "Invalid credentials"})))
 
   (POST "/logout" []

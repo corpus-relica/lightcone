@@ -9,10 +9,10 @@
 (defn get-people []
   (try
     (let [response (http/get (str service-url "/fact/classified")
-                            {:query-params {:uid "990010"
-                                          :recursive true}
-                             :throw-exceptions false
-                             :as :json})]
+                             {:query-params {:uid "990010"
+                                             :recursive true}
+                              :throw-exceptions false
+                              :as :json})]
       (case (:status response)
         200 (let [foo (map (fn [person]
                              ;; physical object
@@ -23,7 +23,7 @@
                            (:body response))]
               (response/response foo))
         404 (response/not-found {:error "No people found"
-                               :details (:body response)})
+                                 :details (:body response)})
         (do
           ;; (log/error "Failed to fetch people:" response)
           (response/status 500 {:error "Failed to fetch people data"}))))
@@ -34,18 +34,17 @@
 (defn get-person-name [uid]
   (try
     (let [response (http/get (str service-url "/fact/classificationFact")
-                            {:query-params {:uid uid}
-                             :throw-exceptions false
-                             :as :json})]
+                             {:query-params {:uid uid}
+                              :throw-exceptions false
+                              :as :json})]
       (case (:status response)
         200 (let [person (first (:body response))]
               (response/response (:lh_object_name person)))
         404 (response/not-found {:error "No person found"
-                               :details (:body response)})
+                                 :details (:body response)})
         (do
           ;; (log/error "Failed to fetch person:" response)
           (response/status 500 {:error "Failed to fetch person data"}))))
     (catch Exception e
       ;; (log/error e "Failed to connect to fact retrieval service")
-      (response/status 500 {:error "Service connection error"}))
-    ))
+      (response/status 500 {:error "Service connection error"}))))

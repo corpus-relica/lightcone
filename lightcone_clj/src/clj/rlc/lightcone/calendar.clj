@@ -1,23 +1,23 @@
 (ns rlc.lightcone.calendar
-(:require [clojure.spec.alpha :as s]
-    [rlc.clarity.occurrence]
-    [rlc.clarity.aspect :as aspect]
-    [rlc.lightcone.contacts :refer [get-person-name]]
-    [rlc.lightcone.archivist :refer [reserve-uid
-                                     submit-binary-facts
-                                     get-event
-                                     get-all-events
-                                     get-event-time
-                                     get-event-time-value
-                                     get-event-participants
-                                     get-event-note
-                                     get-event-note-value
-                                     get-participation-fact
-                                     add-participants
-                                     remove-participants
-                                     post-blanket-rename
-                                     delete-facts
-                                     update-definition]]))
+  (:require [clojure.spec.alpha :as s]
+            [rlc.clarity.occurrence]
+            ;;[rlc.clarity.aspect :as aspect]
+            [rlc.lightcone.contacts :refer  [get-person-name]]
+            [rlc.lightcone.archivist :refer [reserve-uid
+                                             submit-binary-facts
+                                             get-event
+                                             get-all-events
+                                             get-event-time
+                                             get-event-time-value
+                                             get-event-participants
+                                             get-event-note
+                                             get-event-note-value
+                                             get-participation-fact
+                                             add-participants
+                                             remove-participants
+                                             post-blanket-rename
+                                             delete-facts
+                                             update-definition]]))
 
 ;; Domain level specs
 (s/def ::uid int?)
@@ -47,9 +47,7 @@
      :location "Some location"
      :participants ["Alice" "Bob"]})
 
-  (s/explain ::calendar-event some-event)
-
-  )
+  (s/explain ::calendar-event some-event))
 
 (def event-kind-ref 1000000395)
 (def period-in-time-kind-ref 2064)
@@ -95,9 +93,9 @@
   [location]
   [location-of-an-occurrence-kind-ref
    {:uid (reserve-uid 1) ;; or retrieve as special aspect of some physical object in the semantic model
-   :name location
-   :nature :individual
-   :kind-ref spacial-aspect-kind-ref}])
+    :name location
+    :nature :individual
+    :kind-ref spacial-aspect-kind-ref}])
 
 (defn note->aspect
   "Transform a note to an aspect tuple"
@@ -149,11 +147,10 @@
    :time (-> clarity-event :is-the-case-at :value)
    ;;:note
    :participants (map
-                  #(->(second %)(:uid))
+                  #(-> (second %) (:uid))
                   (filter
                    #(= involvement-as-participant-kind-ref (first %))
-                   (:involved clarity-event)))
-   })
+                   (:involved clarity-event)))})
    ;; :location (-> clarity-event :involved
    ;;               (filter #(= location-of-an-occurrence-kind-ref (:kind-ref (second %))))
    ;;               (first :name))})
@@ -231,8 +228,7 @@
                                    :rel-type-uid possession-of-aspect-kind-ref
                                    :rel-type-name "has as aspect"
                                    :rh-object-uid note-uid
-                                   :rh-object-name note-name}]
-                                 )]
+                                   :rh-object-name note-name}])]
     gellish-note-relations))
 
 (defn save-to-storage [clarity-event]
@@ -264,42 +260,41 @@
                               [gellish-possession-of-point-in-time-relation]
                               gellish-participation-relations
                               gellish-note-relations)
-        result (submit-binary-facts gellish-facts)
-        ]
+        result (submit-binary-facts gellish-facts)]
     (tap> "GELLISH EVENT")
     (tap> gellish-facts)
     ;; (tap> "SAVE EVENT")
     ;; (tap> gellish-facts)
     (tap> result)
 
-  clarity-event))
+    clarity-event))
 
 (defn fetch-all-events []
   (let [events (:body (get-all-events))
         ;; Use mapv to force sequential processing
         times (doall (mapv #(try
-                             (:body (get-event-time-value (:uid %)))
-                             (catch Exception e
-                               (tap> (str "Failed to get time for " (:uid %)))
-                               nil))
-                          events))
+                              (:body (get-event-time-value (:uid %)))
+                              (catch Exception e
+                                (tap> (str "Failed to get time for " (:uid %)))
+                                nil))
+                           events))
         _ (tap> "FETCH ALL EVENTS")
         ;; Add delay between calls if needed
         ;; _ (Thread/sleep 100)
         participants (doall (mapv #(try
-                                   (:body (get-event-participants (:uid %)))
-                                   (catch Exception e
-                                     (tap> (str "Failed to get participants for " (:uid %)))
-                                     nil))
-                                events))
+                                     (:body (get-event-participants (:uid %)))
+                                     (catch Exception e
+                                       (tap> (str "Failed to get participants for " (:uid %)))
+                                       nil))
+                                  events))
         _ (tap> "FETCH ALL PARTICIPANTS")
         _ (tap> participants)
         notes (doall (mapv #(try
-                            (:body (get-event-note-value (:uid %)))
-                            (catch Exception e
-                              (tap> (str "Failed to get note for " (:uid %)))
-                              nil))
-                         events))
+                              (:body (get-event-note-value (:uid %)))
+                              (catch Exception e
+                                (tap> (str "Failed to get note for " (:uid %)))
+                                nil))
+                           events))
         final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)]
     (tap> "FETCH ALL EVENTS")
     ;; (tap> times)
@@ -313,20 +308,17 @@
                (:body (get-event-time-value uid))
                (catch Exception e
                  (tap> (str "Failed to get time for " uid))
-                 nil)
-               )
+                 nil))
         participants (try
                        (:body (get-event-participants uid))
                        (catch Exception e
                          (tap> (str "Failed to get participants for " uid))
-                         nil)
-                       )
+                         nil))
         note (try
                (:body (get-event-note-value uid))
                (catch Exception e
                  (tap> (str "Failed to get note for " uid))
-                 nil)
-               )]
+                 nil))]
     (tap> "FETCH EVENT WTF?")
     (tap> uid)
     (tap> event)
@@ -388,8 +380,7 @@
         ]
 
     ;; Return calendar format for UI
-    (clarity->calendar updated-event)
-    ))
+    (clarity->calendar updated-event)))
 
 (defn update-event-note
   "Update the note of an event"
@@ -401,20 +392,17 @@
         fact-uid (-> event-note :body second :fact_uid)
         _ (tap> "EVENT NOTE FACT!!!!")
         _ (tap> fact-uid)
-        result (update-definition fact-uid note)
-        ]
+        result (update-definition fact-uid note)]
     (tap> "RESULT")
     (tap> result)
-    result)
-  )
+    result))
 
 (defn update-event-field [event-id field value]
   (tap> "UPDATE EVENT FIELD")
   (tap> [event-id field value])
 
   (let [result (post-blanket-rename event-id value)
-        event (get-event event-id)
-        ]
+        event (get-event event-id)]
     (tap> "RESULT")
     (tap> result)
     (tap> "EVENT")
@@ -458,5 +446,4 @@
 
 (comment
   (tap> (calendar->clarity some-event))
-  (s/explain :rlc.clarity.occurrence/occurrence (calendar->clarity some-event))
-  )
+  (s/explain :rlc.clarity.occurrence/occurrence (calendar->clarity some-event)))

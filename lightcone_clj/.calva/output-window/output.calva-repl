@@ -1,0 +1,794 @@
+; This is the Calva REPL Window.
+; It's just a file, really, with some special treatment from Calva.
+; Use it as a REPL input prompt if you like. (When the REPL is connected.)
+; TIPS: The keyboard shortcut `ctrl+alt+o r` shows and focuses this window
+; Please see https://calva.io/repl-window/ for more info.
+; Happy coding! ♥️
+
+; TIPS: As with any Clojure file when the REPL is connected:
+; - `alt+enter` evaluates the current top level form.
+; - `ctrl+enter` evaluates the current form.
+; Special for this file:
+; - `alt+up` and `alt+down` traverse up and down the REPL command history
+;    when the cursor is after the last contents at the prompt
+; 
+; See also the Calva Inspector: https://calva.io/inspector/
+
+PLEASE NOTE
+We will update the default location of this file.
+The new default location will be
+  "<projectRootPath>/.calva/repl.calva-repl"
+For now the legacy path is used by default.
+To give yourself a smooth transition, you can opt in
+to the change, by configuring this setting as false:
+  "calva.useLegacyReplWindowPath"
+and then add "**/.calva/repl.calva-repl" to your ".gitignore" file.
+
+
+This file is configured as the output destination for all REPL output.
+You can configure this with the setting:
+  "calva.outputDestinations"
+
+
+; Jacking in...
+; Connecting using "deps.edn" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Starting Jack-in: (cd /home/marc/Relica/labs/rlc_lightcone/lightcone_clj; clojure -Sdeps '{:deps {nrepl/nrepl {:mvn/version,"1.1.1"},cider/cider-nrepl {:mvn/version,"0.47.1"}}}' -M:dev:reveal)
+; Using host:port localhost:35563 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉user꞉> 
+"Please see https://calva.io/output/#about-stdout-in-the-repl-window
+about why stdout printed to this file is prepended with `;` to be line comments."
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.server/eval13575$loading (REPL:1).
+; Could not locate rlc/lightcone/routes/core__init.class, rlc/lightcone/routes/core.clj or rlc/lightcone/routes/core.cljc on classpath.
+clj꞉rlc.lightcone.server꞉> 
+; Evaluating file: server.clj
+; 
+; ; clj  rlc.lightcone.server 
+; Execution error (FileNotFoundException) at rlc.lightcone.server/eval13584$loading (server.clj:1).
+; Could not locate rlc/lightcone/routes/core__init.class, rlc/lightcone/routes/core.clj or rlc/lightcone/routes/core.cljc on classpath.
+; Evaluation of file server.clj failed: class clojure.lang.Compiler$CompilerException
+clj꞉rlc.lightcone.server꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.server/eval13592$loading (REPL:1).
+; Could not locate rlc/lightcone/routes/core__init.class, rlc/lightcone/routes/core.clj or rlc/lightcone/routes/core.cljc on classpath.
+clj꞉rlc.lightcone.server꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.routes.core/eval15832$loading (REPL:1).
+; Could not locate rlc/lightcone/routes/events__init.class, rlc/lightcone/routes/events.clj or rlc/lightcone/routes/events.cljc on classpath.
+clj꞉rlc.lightcone.routes.core꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.calendar/eval16034$loading (REPL:1).
+; Could not locate rlc/lightcone/contacts__init.class, rlc/lightcone/contacts.clj or rlc/lightcone/contacts.cljc on classpath.
+clj꞉rlc.lightcone.calendar꞉> 
+nil
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/service-url
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/get-people
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/get-person-name
+clj꞉rlc.lightcone.contacts꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.calendar/eval18699$loading (REPL:1).
+; Could not locate rlc/lightcone/archivist__init.class, rlc/lightcone/archivist.clj or rlc/lightcone/archivist.cljc on classpath.
+clj꞉rlc.lightcone.calendar꞉> 
+nil
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/service-url
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/reserve-uid
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/kebab->snake
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/transform-keys
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/submit-binary-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/delete-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-all-events
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/query-service
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-participation-fact
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-person-name
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/post-blanket-rename
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/update-definition
+clj꞉rlc.lightcone.archivist꞉> 
+nil
+clj꞉rlc.lightcone.calendar꞉> 
+#object[clojure.core$int_QMARK_ 0xa0ca768 "clojure.core$int_QMARK_@a0ca768"]
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/event-type
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/uid
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/title
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/note
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/participants
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/location
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/calendar-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/event-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/period-in-time-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/point-in-time-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/->point-in-time
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/person-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/involvement-as-attendee-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/involvement-as-participant-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/participant->involvement
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/possession-of-aspect-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/note-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/location-of-an-occurrence-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/spacial-aspect-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/location->involvement
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/note->aspect
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/calendar->clarity
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/clarity->calendar
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-point-in-time-aspect-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-possession-of-point-in-time-relation-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-participation-relations-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-note-relations-def
+clj꞉rlc.lightcone.calendar꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/calendar.clj:238:3).
+; Unable to resolve symbol: clarity-event in this context
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/save-to-storage
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/fetch-all-events
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/fetch-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/create-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-note
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-field
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-participants
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/delete-event
+clj꞉rlc.lightcone.calendar꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.routes.auth/eval19156$loading (REPL:1).
+; Could not locate rlc/lightcone/auth__init.class, rlc/lightcone/auth.clj or rlc/lightcone/auth.cljc on classpath.
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/users
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-create-user!
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-get-user-by-username
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/create-user
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/secret
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/token-expiration-time
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/generate-token
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/validate-token
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/is-authenticated?
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/session-auth-backend
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/jwt-auth-backend
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/wrap-session-authentication
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/wrap-jwt-authentication
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.events꞉> 
+#object[compojure.core$make_context$fn__15764 0x23087e5e "compojure.core$make_context$fn__15764@23087e5e"]
+clj꞉rlc.lightcone.routes.events꞉> 
+#object[compojure.core$make_context$fn__15764 0x332758e1 "compojure.core$make_context$fn__15764@332758e1"]
+clj꞉rlc.lightcone.routes.events꞉> 
+#object[compojure.core$make_context$fn__15764 0x27a653eb "compojure.core$make_context$fn__15764@27a653eb"]
+clj꞉rlc.lightcone.routes.events꞉> 
+#'rlc.lightcone.routes.events/event-routes
+clj꞉rlc.lightcone.routes.events꞉> 
+nil
+clj꞉rlc.lightcone.routes.person꞉> 
+#'rlc.lightcone.routes.person/person-routes
+clj꞉rlc.lightcone.routes.person꞉> 
+nil
+clj꞉rlc.lightcone.routes.core꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+; Execution error (BindException) at sun.nio.ch.Net/bind0 (Net.java:-2).
+; Address already in use
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Connecting using "deps.edn" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Starting Jack-in: (cd /home/marc/Relica/labs/rlc_lightcone/lightcone_clj; clojure -Sdeps '{:deps {nrepl/nrepl {:mvn/version,"1.1.1"},cider/cider-nrepl {:mvn/version,"0.47.1"}}}' -M:dev:reveal)
+; Using host:port localhost:32779 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/routes/auth.clj:0:0).
+; Unable to resolve symbol: authenticate-user in this context
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/base-url
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/login-url
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/users
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-create-user!
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-get-user-by-username
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/create-user
+clj꞉rlc.lightcone.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/auth.clj:34:20).
+; No such namespace: http
+clj꞉rlc.lightcone.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/auth.clj:34:20).
+; No such namespace: http
+clj꞉rlc.lightcone.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/auth.clj:35:20).
+; No such namespace: http
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/routes/auth.clj:19:11).
+; Unable to resolve symbol: db-get-user-by-username in this context
+clj꞉rlc.lightcone.routes.auth꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.routes.auth/eval20395$loading (REPL:1).
+; Could not locate rlc/lightcone/calendar__init.class, rlc/lightcone/calendar.clj or rlc/lightcone/calendar.cljc on classpath.
+clj꞉rlc.lightcone.routes.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/routes/person.clj:11:32).
+; No such namespace: contacts
+clj꞉rlc.lightcone.routes.person꞉> 
+; Execution error (FileNotFoundException) at rlc.lightcone.routes.person/eval20415$loading (REPL:1).
+; Could not locate rlc/lightcone/contacts__init.class, rlc/lightcone/contacts.clj or rlc/lightcone/contacts.cljc on classpath.
+clj꞉rlc.lightcone.routes.person꞉> 
+nil
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/service-url
+clj꞉rlc.lightcone.contacts꞉> 
+; Execution error (IllegalAccessError) at rlc.lightcone.calendar/eval20641$loading (REPL:1).
+; get-person-name does not exist
+clj꞉rlc.lightcone.calendar꞉> 
+nil
+clj꞉rlc.lightcone.archivist꞉> 
+nil
+clj꞉rlc.lightcone.archivist꞉> 
+nil
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/service-url
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/reserve-uid
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/kebab->snake
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/transform-keys
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/submit-binary-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/delete-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-all-events
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/query-service
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-participation-fact
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-person-name
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/post-blanket-rename
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/update-definition
+clj꞉rlc.lightcone.archivist꞉> 
+nil
+clj꞉rlc.lightcone.contacts꞉> 
+nil
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/service-url
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/get-people
+clj꞉rlc.lightcone.contacts꞉> 
+#'rlc.lightcone.contacts/get-person-name
+clj꞉rlc.lightcone.contacts꞉> 
+nil
+clj꞉rlc.lightcone.calendar꞉> 
+; Evaluating file: calendar.clj
+nil
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/uid
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/event-type
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/title
+clj꞉rlc.lightcone.calendar꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/calendar.clj:0:0).
+; Can't take value of a macro: #'clojure.spec.alpha/def
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/note
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/participants
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/location
+clj꞉rlc.lightcone.calendar꞉> 
+:rlc.lightcone.calendar/calendar-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/event-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/calendar.clj:0:0).
+; Unable to resolve symbol: def in this context
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/period-in-time-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/point-in-time-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/->point-in-time
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/person-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/involvement-as-attendee-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/involvement-as-participant-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/participant->involvement
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/possession-of-aspect-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/note-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/location-of-an-occurrence-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/calendar.clj:0:0).
+; Unable to resolve symbol: def in this context
+clj꞉rlc.lightcone.calendar꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/calendar.clj:0:0).
+; Unable to resolve symbol: def in this context
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/spacial-aspect-kind-ref
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/location->involvement
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/note->aspect
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/calendar->clarity
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/clarity->calendar
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-point-in-time-aspect-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-possession-of-point-in-time-relation-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-participation-relations-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/gellish-note-relations-def
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/save-to-storage
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/fetch-all-events
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/fetch-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/create-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-note
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-field
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/update-event-participants
+clj꞉rlc.lightcone.calendar꞉> 
+#'rlc.lightcone.calendar/delete-event
+clj꞉rlc.lightcone.calendar꞉> 
+nil
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/service-url
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/reserve-uid
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/kebab->snake
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/transform-keys
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/submit-binary-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/delete-facts
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-all-events
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/query-service
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-time
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note-value
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-event-note
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-participation-fact
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/get-person-name
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/add-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participant
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/remove-participants
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/post-blanket-rename
+clj꞉rlc.lightcone.archivist꞉> 
+#'rlc.lightcone.archivist/update-definition
+clj꞉rlc.lightcone.archivist꞉> 
+; Execution error (IllegalAccessError) at rlc.lightcone.routes.auth/eval21338$loading (REPL:1).
+; generate-token does not exist
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.calendar꞉> 
+nil
+clj꞉rlc.lightcone.contacts꞉> 
+nil
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/base-url
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/login-url
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/users
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-create-user!
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/db-get-user-by-username
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/create-user
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/secret
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/token-expiration-time
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/generate-token
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/validate-token
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/is-authenticated?
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/session-auth-backend
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/jwt-auth-backend
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/wrap-session-authentication
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/wrap-jwt-authentication
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#object[compojure.core$wrap_route_matches$fn__14354 0x752e493a "compojure.core$wrap_route_matches$fn__14354@752e493a"]
+clj꞉rlc.lightcone.routes.auth꞉> 
+#object[compojure.core$wrap_route_matches$fn__14354 0x5fd27b6d "compojure.core$wrap_route_matches$fn__14354@5fd27b6d"]
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.events꞉> 
+#object[compojure.core$make_context$fn__14445 0x344baf9e "compojure.core$make_context$fn__14445@344baf9e"]
+clj꞉rlc.lightcone.routes.events꞉> 
+#'rlc.lightcone.routes.events/event-routes
+clj꞉rlc.lightcone.routes.events꞉> 
+nil
+clj꞉rlc.lightcone.routes.person꞉> 
+#'rlc.lightcone.routes.person/person-routes
+clj꞉rlc.lightcone.routes.person꞉> 
+nil
+clj꞉rlc.lightcone.routes.core꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/server.clj:29:3).
+; Unable to resolve symbol: server in this context
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+; Syntax error macroexpanding clojure.core/if-let at (src/clj/rlc/lightcone/routes/auth.clj:32:7).
+; ((let [token (generate-token user)] {:status 200, :body {:token token}}) {:status 401, :body "Invalid credentials"}) - failed: Extra input
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; FUCLOFF!!
+nil
+clj꞉rlc.lightcone.auth꞉> 
+; Syntax error compiling at (src/clj/rlc/lightcone/routes/auth.clj:33:9).
+; Unable to resolve symbol: token in this context
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.auth/login-url
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/users
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/create-user
+clj꞉rlc.lightcone.auth꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.core꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+#'rlc.lightcone.auth/authenticate-user
+clj꞉rlc.lightcone.auth꞉> 
+nil
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.auth/auth-routes
+clj꞉rlc.lightcone.routes.auth꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.routes.core꞉> 
+#'rlc.lightcone.routes.core/app-routes
+clj꞉rlc.lightcone.routes.core꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/app
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/start-server
+clj꞉rlc.lightcone.server꞉> 
+nil
+clj꞉rlc.lightcone.server꞉> 
+#'rlc.lightcone.server/server
+clj꞉rlc.lightcone.server꞉> 

@@ -27,17 +27,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const isAuthenticated = localStorage.getItem('token') ? true : false;
+  useEffect(() => {
+    setIsAuthenticated(localStorage.getItem('token') ? true : false);
+  }, []);
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-    <AuthProvider isAuthenticated={isAuthenticated}>
-        {children}
-    </AuthProvider>
+        <AuthProvider isAuthenticated={isAuthenticated}>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
