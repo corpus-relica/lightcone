@@ -67,7 +67,7 @@
       (tap> "GOT EVENT TIME VALUE ------->")
       (tap> response)
       (case (:status response)
-        200 (response/response (:time (:body response)))
+        200 (response/response (:value (:body response)))
         401 (response/status 401 {:error "Unauthorized"})
         404 (response/not-found {:error "No events found"
                                  :details (:body response)})
@@ -86,7 +86,7 @@
       (tap> "GOT EVENT TIME ------->")
       (tap> response)
       (case (:status response)
-        200 (response/response (:body response))
+        200 (response/response (:value (:body response)))
         401 (response/status 401 {:error "Unauthorized"})
         404 (response/not-found {:error "No events found"
                                  :details (:body response)})
@@ -104,7 +104,7 @@
       (tap> "GOT EVENT PARTICIPANTS ------->")
       (tap> response)
       (case (:status response)
-        200 (response/response (:body response))
+        200 (response/response (:value (:body response)))
         401 (response/status 401 {:error "Unauthorized"})
         404 (response/not-found {:error "No events found"
                                  :details (:body response)})

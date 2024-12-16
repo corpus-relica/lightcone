@@ -84,6 +84,23 @@
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
 
+(defn aspects-of-individual-classified-as [indvUID aspectKindUID token]
+  (try
+    (let [response (http/get (str service-url "/individual/" indvUID "/aspects-classified-as/" aspectKindUID)
+                             {:throw-exceptions false
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
+      (case (:status response)
+        200 (:body response)
+        404 (response/not-found {:error (str "No aspects classified as " aspectKindUID " found for individual " indvUID)
+                                 :details (:body response)})
+        (do
+          ;; (log/error "Failed to fetch UIDs:" response)
+          (response/status 500 {:error (str "Failed retrieving aspects classified as " aspectKindUID " of individual " indvUID)}))))
+    (catch Exception e
+      ;; (log/error e "Failed to connect to fact retrieval service")
+      (response/status 500 {:error "Service connection error"}))))
+
 (defn query-service
   "Makes a query to the service and handles common response patterns"
   [token query-string transform-fn]
@@ -108,56 +125,6 @@
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
 
-(defn get-event-time-value [token uid]
-  (query-service
-   token
-   (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
-   (fn [facts]
-     (let [time (:rh_object_name (second facts))]
-       (tap> "TIME ------->")
-       (tap> facts)
-       (tap> time)
-       time))))
-
-(defn get-event-time [token uid]
-  (query-service
-   token
-   (str uid " > 1785 > ?1.what\n?1.what > 5025 > ?2.value")
-   (fn [facts]
-     facts)))
-
-(defn get-event-participants [token uid]
-  (tap> "GETTING EVENT PARTICIPANTS")
-  (tap> uid)
-  (query-service
-   token
-   (str uid " > 5644 > ?10.who")
-   (fn [facts]
-     (map :rh_object_uid facts))))
-
-(defn get-event-note-value [token uid]
-  (tap> "GETTING EVENT NOTE")
-  (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
-  (query-service
-   token
-   (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
-   (fn [facts]
-     (tap> "NOTE FACTS")
-     (tap> facts)
-     (if (empty? facts)
-       nil
-       (:full_definition (second facts))))))
-
-(defn get-event-note [token uid]
-  (tap> "GETTING EVENT NOTE")
-  (tap> (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035"))
-  (query-service
-   token
-   (str uid " > 1727 > ?10.who\n?10.who > 1225 > 1000000035")
-   (fn [facts]
-     (tap> "NOTE FACTS, FOR REAL")
-     (tap> facts)
-     facts)))
 
 (defn get-participation-fact [lh-object-uid rh-object-uid]
   (query-service

@@ -3,13 +3,14 @@
             [rlc.lightcone.io.contacts :refer  [get-person-name]]
             [rlc.lightcone.io.archivist :refer [reserve-uid
                                              submit-binary-facts
+                                                aspects-of-individual-classified-as
                                              ;; get-event
                                              ;; get-all-events
                                              ;; get-event-time
                                              ;; get-event-time-value
                                              ;; get-event-participants
-                                             get-event-note
-                                             get-event-note-value
+                                             ;; get-event-note
+                                             ;; get-event-note-value
                                              get-participation-fact
                                              add-participants
                                              remove-participants
@@ -273,38 +274,53 @@
 
     clarity-event))
 
+(defn get-event-note-fool [uid token]
+  (let [foo (aspects-of-individual-classified-as uid 1000000035 token)
+        note-fact (first(filter (fn [fact]
+                            (= 1225 (:rel_type_uid fact)))
+                          foo))]
+    (tap> "@@@@@@@@@@@@@@@ GET EVENT NOTE @@@@@@@@@@@@@@@")
+    (tap> note-fact)
+    note-fact)
+  )
+
+(defn get-event-note-value-fool [uid token]
+  (let [note (get-event-note-fool uid token)]
+    (tap> "GET EVENT NOTE VALUE")
+    (tap> note)
+    (if note
+      (:full_definition note)
+      nil)))
+
 (defn fetch-all-events [token]
   (tap> "FETCH ALL EVENTS OUTER")
   (let [events (:body (get-all-events token))
         ;; Use mapv to force sequential processing
         _ (tap> "FETCH ALL EVENT TIMES")
         times (doall (mapv #(try
-                              (let [fonk (clarity/get-event-time-value (:uid %) token)]
-                                (tap> fonk)
-                                (:body fonk))
+                              (:body (clarity/get-event-time-value (:uid %) token))
                               (catch Exception e
                                 (tap> (str "Failed to get time for " (:uid %)))
                                 nil))
                            events))
-        _ (tap> "FETCH ALL EVENTS")
+        _ (tap> "FETCH ALL PARTICIPANTS")
         ;; Add delay between calls if needed
         ;; _ (Thread/sleep 100)
-        ;; participants (doall (mapv #(try
-        ;;                              (:body (get-event-participants token (:uid %)))
-        ;;                              (catch Exception e
-        ;;                                (tap> (str "Failed to get participants for " (:uid %)))
-        ;;                                nil))
-        ;;                           events))
-        _ (tap> "FETCH ALL PARTICIPANTS")
+        participants (doall (mapv #(try
+                                     (:body (clarity/get-event-participants  (:uid %) token))
+                                     (catch Exception e
+                                       (tap> (str "Failed to get participants for " (:uid %)))
+                                       nil))
+                                  events))
+        _ (tap> "FETCH EVENT NOTES")
         ;; _ (tap> participants)
-        ;; notes (doall (mapv #(try
-        ;;                       (:body (get-event-note-value token (:uid %)))
-        ;;                       (catch Exception e
-        ;;                         (tap> (str "Failed to get note for " (:uid %)))
-        ;;                         nil))
-        ;;                    events))
-        ;; final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)
-        final-events (map #(assoc %1 :time %2) events times)
+        notes (doall (mapv #(try
+                              (get-event-note-value-fool (:uid %) token)
+                              (catch Exception e
+                                (tap> (str "Failed to get note for " (:uid %)))
+                                nil))
+                           events))
+        final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)
         ]
     (tap> "FETCH ALL EVENTS INNER : FINAL EVENTS")
     ;; (tap> times)
@@ -325,7 +341,7 @@
                          (tap> (str "Failed to get participants for " uid))
                          nil))
         note (try
-               (:body (get-event-note-value token uid))
+               (:body (get-event-note-value-fool token uid))
                (catch Exception e
                  (tap> (str "Failed to get note for " uid))
                  nil))]
