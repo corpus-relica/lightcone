@@ -5,8 +5,8 @@
             [rlc.lightcone.io.contacts :refer  [get-person-name]]
             [rlc.lightcone.io.archivist :refer [reserve-uid
                                              submit-binary-facts
-                                             get-event
-                                             get-all-events
+                                             ;; get-event
+                                             ;; get-all-events
                                              get-event-time
                                              get-event-time-value
                                              get-event-participants
@@ -17,7 +17,9 @@
                                              remove-participants
                                              post-blanket-rename
                                              delete-facts
-                                             update-definition]]))
+                                             update-definition]]
+             [rlc.lightcone.io.clarity :refer [get-event
+                                               get-all-events]]))
 
 ;; Domain level specs
 (s/def ::uid int?)
@@ -273,30 +275,32 @@
   (tap> "FETCH ALL EVENTS OUTER")
   (let [events (:body (get-all-events token))
         ;; Use mapv to force sequential processing
-        times (doall (mapv #(try
-                              (:body (get-event-time-value token (:uid %)))
-                              (catch Exception e
-                                (tap> (str "Failed to get time for " (:uid %)))
-                                nil))
-                           events))
+        ;; times (doall (mapv #(try
+        ;;                       (:body (get-event-time-value token (:uid %)))
+        ;;                       (catch Exception e
+        ;;                         (tap> (str "Failed to get time for " (:uid %)))
+        ;;                         nil))
+        ;;                    events))
         _ (tap> "FETCH ALL EVENTS")
         ;; Add delay between calls if needed
         ;; _ (Thread/sleep 100)
-        participants (doall (mapv #(try
-                                     (:body (get-event-participants token (:uid %)))
-                                     (catch Exception e
-                                       (tap> (str "Failed to get participants for " (:uid %)))
-                                       nil))
-                                  events))
+        ;; participants (doall (mapv #(try
+        ;;                              (:body (get-event-participants token (:uid %)))
+        ;;                              (catch Exception e
+        ;;                                (tap> (str "Failed to get participants for " (:uid %)))
+        ;;                                nil))
+        ;;                           events))
         _ (tap> "FETCH ALL PARTICIPANTS")
-        _ (tap> participants)
-        notes (doall (mapv #(try
-                              (:body (get-event-note-value token (:uid %)))
-                              (catch Exception e
-                                (tap> (str "Failed to get note for " (:uid %)))
-                                nil))
-                           events))
-        final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)]
+        ;; _ (tap> participants)
+        ;; notes (doall (mapv #(try
+        ;;                       (:body (get-event-note-value token (:uid %)))
+        ;;                       (catch Exception e
+        ;;                         (tap> (str "Failed to get note for " (:uid %)))
+        ;;                         nil))
+        ;;                    events))
+        ;; final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)
+        final-events events
+        ]
     (tap> "FETCH ALL EVENTS INNER")
     ;; (tap> times)
     ;; (tap> events)

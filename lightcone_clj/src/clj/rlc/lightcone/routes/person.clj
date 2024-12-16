@@ -1,7 +1,7 @@
 (ns rlc.lightcone.routes.person
   (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
             [ring.util.response :as response]
-            [rlc.lightcone.contacts :as contacts]))
+            [rlc.lightcone.io.contacts :as contacts]))
 
 (defroutes person-routes
   (context "/api/person" []

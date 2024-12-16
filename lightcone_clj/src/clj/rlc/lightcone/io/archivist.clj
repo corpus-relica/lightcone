@@ -84,59 +84,6 @@
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
 
-(defn get-all-events [token]
-  (tap> "GETTING ALL EVENTS")
-  (try
-    (let [response (http/get (str service-url "/fact/classified")
-                             {:query-params {:uid "1000000395"
-                                             :recursive false}
-                              :throw-exceptions false
-                              :as :json
-                              :headers {"Authorization" (str "Bearer " token)}})]
-      (case (:status response)
-        200 (let [foo (map (fn [event]
-                             {:uid (:lh_object_uid event)
-                              :title (:lh_object_name event)
-                              :event-type :event})
-                           (:body response))]
-              (response/response foo))
-        401 (response/status 401 {:error "Unauthorized"})
-        404 (response/not-found {:error "No events found"
-                                 :details (:body response)})
-        (do
-          ;; (log/error "Failed to fetch events:" response)
-          (response/status 500 {:error "Failed to fetch events data"}))))))
-
-(defn get-event [token uid]
-  (try
-    (let [response (http/get (str service-url "/fact/classificationFact")
-                             {:query-params {:uid uid}
-                              :throw-exceptions false
-                              :as :json
-                              :headers {"Authorization" (str "Bearer " token)}})]
-      (case (:status response)
-        200 (let [body (first (:body response))
-                  event {:uid (:lh_object_uid body)
-                         :title (:lh_object_name body)
-                         :event-type :event
-                         :time nil
-                         :participants nil}]
-              (tap> "GOT EVENT ------->")
-              (tap> event)
-              (response/response event))
-        404 (response/not-found {:error "No event found"
-                                 :details (:body response)})
-        (do
-          ;; (log/error "Failed to fetch event:" response)
-          (tap> "FAILED TO FETCH EVENT"
-                (tap> response))
-          (response/status 500 {:error "Failed to fetch event data"}))))
-    (catch Exception e
-      ;; (log/error e "Failed to connect to fact retrieval service")
-      (tap> "FAILED TO FETCH EVENT EXCEPTION")
-      (tap> e)
-      (response/status 500 {:error "Service connection error"}))))
-
 (defn query-service
   "Makes a query to the service and handles common response patterns"
   [token query-string transform-fn]
@@ -239,22 +186,23 @@
       (response/status 500 {:error "Service connection error"}))))
 
 (defn add-participant [event-uid person-uid]
-  (try
-    (let [event-name (get-in (get-event event-uid) [:body :title])
-          person-name (:body (get-person-name person-uid))
-          fact {:lh-object-uid event-uid
-                :lh-object-name event-name
-                :rel-type-uid 5644
-                :rel-type-name "has as participant"
-                :rh-object-uid person-uid
-                :rh-object-name person-name}
-          response (submit-binary-facts [fact])]
-      ;; (tap> "ADD PARTICIPANT RESPONSE")
-      ;; (tap> response)
-      response)
-    (catch Exception e
-      ;; (log/error e "Failed to connect to fact retrieval service")
-      (response/status 500 {:error "Service connection error"}))))
+  ;; (try
+  ;;   (let [event-name (get-in (get-event event-uid) [:body :title])
+  ;;         person-name (:body (get-person-name person-uid))
+  ;;         fact {:lh-object-uid event-uid
+  ;;               :lh-object-name event-name
+  ;;               :rel-type-uid 5644
+  ;;               :rel-type-name "has as participant"
+  ;;               :rh-object-uid person-uid
+  ;;               :rh-object-name person-name}
+  ;;         response (submit-binary-facts [fact])]
+  ;;     ;; (tap> "ADD PARTICIPANT RESPONSE")
+  ;;     ;; (tap> response)
+  ;;     response)
+  ;;   (catch Exception e
+  ;;     ;; (log/error e "Failed to connect to fact retrieval service")
+  ;;     (response/status 500 {:error "Service connection error"})))
+  )
 
 (defn add-participants [event-uid person-uids]
   (doall (map #(add-participant event-uid %) person-uids)))

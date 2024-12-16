@@ -2,8 +2,8 @@
   (:require [compojure.core :refer [defroutes context GET POST OPTIONS PUT DELETE]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
-            [rlc.lightcone.calendar :as calendar]
-            [rlc.lightcone.auth :refer [authenticate-user
+            [rlc.lightcone.io.calendar :as calendar]
+            [rlc.lightcone.io.auth :refer [authenticate-user
                                         generate-token
                                         db-get-user-by-username
                                         create-user]]))
