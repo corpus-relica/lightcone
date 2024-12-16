@@ -1,15 +1,13 @@
 (ns rlc.lightcone.io.calendar
   (:require [clojure.spec.alpha :as s]
-            ;; [rlc.clarity.occurrence]
-            ;;[rlc.clarity.aspect :as aspect]
             [rlc.lightcone.io.contacts :refer  [get-person-name]]
             [rlc.lightcone.io.archivist :refer [reserve-uid
                                              submit-binary-facts
                                              ;; get-event
                                              ;; get-all-events
-                                             get-event-time
-                                             get-event-time-value
-                                             get-event-participants
+                                             ;; get-event-time
+                                             ;; get-event-time-value
+                                             ;; get-event-participants
                                              get-event-note
                                              get-event-note-value
                                              get-participation-fact
@@ -18,8 +16,12 @@
                                              post-blanket-rename
                                              delete-facts
                                              update-definition]]
-             [rlc.lightcone.io.clarity :refer [get-event
-                                               get-all-events]]))
+             [rlc.lightcone.io.clarity :as clarity :refer [get-event
+                                                           get-all-events
+                                                           ;; get-event-time
+                                                           ;; get-event-time-value
+                                                           ;; get-event-participants
+                                                           ]]))
 
 ;; Domain level specs
 (s/def ::uid int?)
@@ -275,12 +277,15 @@
   (tap> "FETCH ALL EVENTS OUTER")
   (let [events (:body (get-all-events token))
         ;; Use mapv to force sequential processing
-        ;; times (doall (mapv #(try
-        ;;                       (:body (get-event-time-value token (:uid %)))
-        ;;                       (catch Exception e
-        ;;                         (tap> (str "Failed to get time for " (:uid %)))
-        ;;                         nil))
-        ;;                    events))
+        _ (tap> "FETCH ALL EVENT TIMES")
+        times (doall (mapv #(try
+                              (let [fonk (clarity/get-event-time-value (:uid %) token)]
+                                (tap> fonk)
+                                (:body fonk))
+                              (catch Exception e
+                                (tap> (str "Failed to get time for " (:uid %)))
+                                nil))
+                           events))
         _ (tap> "FETCH ALL EVENTS")
         ;; Add delay between calls if needed
         ;; _ (Thread/sleep 100)
@@ -299,9 +304,9 @@
         ;;                         nil))
         ;;                    events))
         ;; final-events (map #(assoc %1 :time %2 :participants %3 :note %4) events times participants notes)
-        final-events events
+        final-events (map #(assoc %1 :time %2) events times)
         ]
-    (tap> "FETCH ALL EVENTS INNER")
+    (tap> "FETCH ALL EVENTS INNER : FINAL EVENTS")
     ;; (tap> times)
     ;; (tap> events)
     (tap> final-events)
@@ -310,12 +315,12 @@
 (defn fetch-event [token uid]
   (let [event (:body (get-event token uid))
         time (try
-               (:body (get-event-time-value token uid))
+               (:body (clarity/get-event-time-value token uid))
                (catch Exception e
                  (tap> (str "Failed to get time for " uid))
                  nil))
         participants (try
-                       (:body (get-event-participants token uid))
+                       (:body (clarity/get-event-participants token uid))
                        (catch Exception e
                          (tap> (str "Failed to get participants for " uid))
                          nil))

@@ -55,3 +55,58 @@
       (tap> "FAILED TO FETCH EVENT EXCEPTION")
       (tap> e)
       (response/status 500 {:error "Service connection error"}))))
+
+
+(defn get-event-time-value [uid token]
+  (tap> "GETTING EVENT TIME VALUE from CLARITY")
+  (try
+    (let [response (http/get (str service-url "/event/" uid "/time-value")
+                             {:throw-exceptions false
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
+      (tap> "GOT EVENT TIME VALUE ------->")
+      (tap> response)
+      (case (:status response)
+        200 (response/response (:time (:body response)))
+        401 (response/status 401 {:error "Unauthorized"})
+        404 (response/not-found {:error "No events found"
+                                 :details (:body response)})
+        (do
+          (response/status 500 {:error "Failed to fetch events data"}))))))
+
+
+(defn get-event-time [uid token]
+  (tap> "GETTING EVENT TIME from CLARITY")
+  (tap> token)
+  (try
+    (let [response (http/get (str service-url "/event/" uid "/time")
+                             {:throw-exceptions false
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
+      (tap> "GOT EVENT TIME ------->")
+      (tap> response)
+      (case (:status response)
+        200 (response/response (:body response))
+        401 (response/status 401 {:error "Unauthorized"})
+        404 (response/not-found {:error "No events found"
+                                 :details (:body response)})
+        (do
+          (response/status 500 {:error "Failed to fetch events data"}))))))
+
+(defn get-event-participants [uid token]
+  (tap> "GETTING EVENT PARTICIPANTS from CLARITY")
+  (tap> token)
+  (try
+    (let [response (http/get (str service-url "/event/" uid "/participants")
+                             {:throw-exceptions false
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
+      (tap> "GOT EVENT PARTICIPANTS ------->")
+      (tap> response)
+      (case (:status response)
+        200 (response/response (:body response))
+        401 (response/status 401 {:error "Unauthorized"})
+        404 (response/not-found {:error "No events found"
+                                 :details (:body response)})
+        (do
+          (response/status 500 {:error "Failed to fetch events data"}))))))
