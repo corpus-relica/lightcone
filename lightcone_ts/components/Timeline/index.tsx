@@ -5,7 +5,6 @@ const Timeline = (props) => {
   const [eventItems, setEventItems] = useState([]);
   const { events } = props;
 
-
   useEffect(() => {
     const ei = events.map((event) => {
       return {
@@ -18,23 +17,28 @@ const Timeline = (props) => {
     setEventItems(ei)
   }, [events]);
 
-
-
   const groups = [
     { id: 1, content: 'Group 1' },
     { id: 2, content: 'Group 2' }
   ];
 
   const options = {
-    height: '500px',
+    width: '100%',    // Add this
+    height: '100%',   // Change this from fixed 500px
     editable: true
   };
 
-  console.log("EVENT ITEMS",eventItems)
-
-  return (<div>
-            {eventItems.length > 0 ? <VisTimeline items={ eventItems } groups={ groups } options={ options } /> : null}
-          </div>);
+  return (
+    <div className="h-full w-full">  {/* Add this wrapper */}
+      {eventItems.length > 0 ? (
+        <VisTimeline
+          items={eventItems}
+          groups={groups}
+          options={options}
+        />
+      ) : null}
+    </div>
+  );
 };
 
 export default Timeline;

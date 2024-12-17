@@ -7,6 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import { ScrollArea } from "@/components/ui/scroll-area"
+
 const EventsList = (props) => {
   const { events } = props;
 
@@ -22,17 +24,11 @@ const EventsList = (props) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-2xl">Events List</CardTitle>
-        <CardDescription>
-          A list of events
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <ScrollArea className="h-[calc(100%-57px)]">
+      <div className="p-4 space-y-2">
         {renderEvents()}
-      </CardContent>
-    </Card>
+      </div>
+    </ScrollArea>
   );
 };
 
