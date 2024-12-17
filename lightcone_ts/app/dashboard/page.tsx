@@ -5,6 +5,7 @@ import { ProtectedRoute } from '../ProtectedRoute';
 import { Button } from "@/components/ui/button";
 import { AuthContext } from '../AuthContext';
 import EventsList from "@/components/EventsList";
+import EventForm from "@/components/EventForm";
 import Timeline from "@/components/Timeline";
 import { getEvents } from "../api";
 
@@ -62,7 +63,7 @@ const Dashboard = () => {
                 {/* Form Section */}
                 <div className="flex-1 p-4">
                   <div className="bg-card h-full rounded p-4">
-                    Event Details Form
+                    <EventForm onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
                   </div>
                 </div>
               </div>
