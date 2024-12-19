@@ -1,1 +1,0 @@
-["^ ","~$extract-token",["^ ","~:row",8,"~:col",1,"~:fixed-arities",["~#set",[1]],"~:name","^0","~:ns","~$rlc.lightcone.routes.events","~:top-ns","^7","~:type","~:fn"],"~$event-routes",["^ ","^1",15,"^2",1,"^5","^;","^6","^7","^8","^7"],"~:filename","/home/marc/Relica/labs/rlc_lightcone/lightcone_clj/src/clj/rlc/lightcone/routes/events.clj"]
