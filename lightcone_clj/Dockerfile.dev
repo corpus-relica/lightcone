@@ -1,0 +1,18 @@
+FROM clojure:temurin-17-tools-deps-jammy
+
+WORKDIR /app
+
+# Copy dependency files
+COPY deps.edn ./
+
+# Copy the rest of the application
+COPY . .
+
+# Expose the server port
+EXPOSE 3000
+
+# Set environment variables
+ENV PORT=3000
+
+# Start the server using the new alias
+CMD ["clj", "-M:server"]

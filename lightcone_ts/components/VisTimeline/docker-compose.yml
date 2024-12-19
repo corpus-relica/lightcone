@@ -1,0 +1,79 @@
+version: "3.8"
+
+services:
+
+  lightcone-be:
+    container_name: lightcone-be
+    # image: node:latest
+    build:
+      context: ./
+      dockerfile: Dockerfile.clarity-core
+    # working_dir: /usr/src/app
+    restart: always
+    # command: sh -c "npm install && npx tsc --outDir dist && npm start"
+    # command: sh -c "yarn install && yarn dev"
+    command: ["yarn", "start:dev"]
+    volumes:
+      - ./packages_ts/clarity-core:/usr/src/app/packages_ts/clarity-core
+      - /usr/src/app/packages_ts/clarity-core/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      - archivist
+    networks:
+      rlc-net:
+        aliases:
+          - clarity-core
+
+  lightcone-fe:
+    container_name: lightcone-fe
+    build:
+      context: .
+      dockerfile: Dockerfile.knowledge-integrator
+    restart: always
+    command: yarn dev
+    volumes:
+      - ./packages_ts/knowledge-integrator:/usr/src/app/packages_ts/knowledge-integrator
+      - ./packages_ts/constants:/usr/src/app/packages_ts/constants
+      - ./packages_ts/fact-search-ui:/usr/src/app/packages_ts/fact-search-ui
+      - ./packages_ts/3d-graph-ui:/usr/src/app/packages_ts/3d-graph-ui
+      - ./packages_ts/hsm-manager:/usr/src/app/packages_ts/hsm-manager
+      - /usr/src/app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - archivist
+      - clarity-core
+    networks:
+      rlc-net:
+        aliases:
+          - knowledge-integrator
+
+  clarity-clj:
+    container_name: clarity-clj
+    build:
+      context: ./
+      dockerfile: Dockerfile.clarity-clj
+    restart: always
+    command: ["clojure", "-M:dev"]
+    # command: ["clojure", "-M:run"]
+    volumes:
+      - ./packages_clj/clarity:/usr/src/app/packages_clj/clarity
+      - /usr/src/app/.m2
+    ports:
+      - "3002:3002"
+      # nREPL port
+      - "7888:7888"
+    depends_on:
+      - archivist
+    networks:
+      rlc-net:
+        aliases:
+          - clarity-clj
+
+networks:
+  rlc-net:
+    name: rlc-net
+    driver: bridge

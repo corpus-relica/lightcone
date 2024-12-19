@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./lightcone_clj
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./lightcone_clj:/app
+      - /app/target
+    ports:
+      - "3003:3000"  # Main backend API port
+      - "9000:9000"  # nREPL port (optional now)
+    environment:
+      - ENVIRONMENT=development
+      - PORT=3000
+    command: clj -M:server
+
+  frontend:
+    build:
+      context: ./lightcone_ts
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./lightcone_ts:/app
+      - /app/node_modules
+    ports:
+      - "3004:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:3000
+    depends_on:
+      - backend
+    command: npm run dev
+
+networks:
+  default:
+    name: lightcone-net
