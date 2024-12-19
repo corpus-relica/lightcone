@@ -15,8 +15,11 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 
 const Dashboard = () => {
 
+  const [selectedEvent, setSelectedEvent] = useState(null); // [event, setEvent
+  const [foobarbaz, setFoobarbaz] = useState(null); // [event, setEvent
   const [events, setEvents] = useState([]);
   const { logout} = useContext(AuthContext);
+
 
   useEffect(() => {
     getEvents().then((data) => {
@@ -31,6 +34,15 @@ const Dashboard = () => {
        }
     });
   }, []);
+
+
+  useEffect(() => {
+    const uid = selectedEvent && selectedEvent[0];
+    const event = uid && events.find((e:any) => e.uid === uid);
+
+    console.log("Selected Event: ", event);
+    setFoobarbaz(event);
+  }, [selectedEvent]);
 
   return (
     <ProtectedRoute>
@@ -48,7 +60,7 @@ const Dashboard = () => {
               {/* Timeline Section */}
               <div className="h-1/3 border-b">  {/* removed p-4 */}
                 <div className="h-full w-full">  {/* removed bg-muted, rounded, flex classes */}
-                  <Timeline events={events}/>
+                  <Timeline events={events} setSelectedEvent={setSelectedEvent} />
                 </div>
               </div>
 
@@ -63,7 +75,7 @@ const Dashboard = () => {
                 {/* Form Section */}
                 <div className="flex-1 p-4">
                   <div className="bg-card h-full rounded p-4">
-                    <EventForm onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
+                    <EventForm initialData={foobarbaz} onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
                   </div>
                 </div>
               </div>

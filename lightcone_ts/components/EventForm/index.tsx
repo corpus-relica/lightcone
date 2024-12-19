@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,6 +17,18 @@ const EventForm = ({ onSubmit, initialData = null }) => {
   const [note, setNote] = useState(initialData?.note || '');
   const [participants, setParticipants] = useState(initialData?.participants || []);
   const [isParticipantMenuOpen, setIsParticipantMenuOpen] = useState(false);
+
+  useEffect(() => {
+    console.log("INITIAL DATA -->");
+    console.log(initialData);
+
+    if (initialData) {
+      setTitle(initialData.title);
+      setDate(initialData.time);
+      setNote(initialData.note);
+      setParticipants(initialData.participants);
+    }
+  }, [initialData]);
 
   // Mock participant data - replace with your actual data
   const availableParticipants = [
