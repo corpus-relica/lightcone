@@ -2,13 +2,12 @@
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
-            [clojure.data.json :as json]))
-
-(def ^:private service-url "http://localhost:3000")
+            [clojure.data.json :as json]
+            [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL]]))
 
 (defn reserve-uid [n]
   (try
-    (let [response (http/get (str service-url "/uid/reserve-uid")
+    (let [response (http/get (str ARCHIVIST_SERVICE_URL "/uid/reserve-uid")
                              {:query-params {:n n}
                               :throw-exceptions false
                               :as :json})]
@@ -45,7 +44,7 @@
     (tap> "FACTS!!!!!!!!!!!!")
     (let [transformed-facts (map transform-keys facts)  ;; Transform before serializing
           _ (tap> (str "Transformed facts:" (json/write-str transformed-facts)))
-          response (http/post (str service-url "/fact/facts")
+          response (http/post (str ARCHIVIST_SERVICE_URL "/fact/facts")
                               {:body (json/write-str transformed-facts)
                                :content-type :json
                                :throw-exceptions false
@@ -69,7 +68,7 @@
   (tap> uids)
   (tap> (json/write-str uids))
   (try
-    (let [response (http/delete (str service-url "/fact/facts")
+    (let [response (http/delete (str ARCHIVIST_SERVICE_URL "/fact/facts")
                                 {:body (json/write-str uids)
                                  :content-type :json
                                  :throw-exceptions false
@@ -86,7 +85,7 @@
 
 (defn aspects-of-individual-classified-as [indvUID aspectKindUID token]
   (try
-    (let [response (http/get (str service-url "/individual/" indvUID "/aspects-classified-as/" aspectKindUID)
+    (let [response (http/get (str ARCHIVIST_SERVICE_URL "/individual/" indvUID "/aspects-classified-as/" aspectKindUID)
                              {:throw-exceptions false
                               :as :json
                               :headers {"Authorization" (str "Bearer " token)}})]
@@ -105,7 +104,7 @@
   "Makes a query to the service and handles common response patterns"
   [token query-string transform-fn]
   (try
-    (let [response (http/post (str service-url "/query/queryString")
+    (let [response (http/post (str ARCHIVIST_SERVICE_URL "/query/queryString")
                               {:body (json/write-str {:queryString query-string})
                                :content-type :json
                                :throw-exceptions false
@@ -136,7 +135,7 @@
 
 (defn get-person-name [uid]
   (try
-    (let [response (http/get (str service-url "/fact/classificationFact")
+    (let [response (http/get (str ARCHIVIST_SERVICE_URL "/fact/classificationFact")
                              {:query-params {:uid uid}
                               :throw-exceptions false
                               :as :json})]
@@ -191,7 +190,7 @@
 
 (defn post-blanket-rename [uid new-name]
   (try
-    (let [response (http/put (str service-url "/submission/blanketRename")
+    (let [response (http/put (str ARCHIVIST_SERVICE_URL "/submission/blanketRename")
                              {:body (json/write-str {:entity_uid uid
                                                      :name new-name})
                               :content-type :json
@@ -213,7 +212,7 @@
   (tap> uid)
   (tap> def)
   (try
-    (let [response (http/put (str service-url "/submission/definition")
+    (let [response (http/put (str ARCHIVIST_SERVICE_URL "/submission/definition")
                              {:body (json/write-str {:fact_uid uid
                                                      :partial_definition def
                                                      :full_definition def})

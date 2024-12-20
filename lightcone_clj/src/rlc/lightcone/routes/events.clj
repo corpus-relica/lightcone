@@ -2,7 +2,7 @@
   (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
-            [rlc.lightcone.io.calendar :as calendar]
+            [rlc.lightcone.app.calendar :as calendar]
             [rlc.lightcone.io.auth :as auth]))
 
 (defn extract-token [request]

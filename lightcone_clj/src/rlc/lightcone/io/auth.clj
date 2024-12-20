@@ -5,9 +5,10 @@
             [buddy.auth.backends.token :refer [jwe-backend]]
             [buddy.hashers :as hashers]
             [buddy.sign.jwt :as jwt]
-            [clj-http.client :as http]))
+            [clj-http.client :as http]
+            [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL]]))
 
-(def base-url "http://localhost:3000")
+(def base-url ARCHIVIST_SERVICE_URL)
 (def login-url (str base-url "/auth/login"))
 (def validate-url (str base-url "/auth/validate"))
 

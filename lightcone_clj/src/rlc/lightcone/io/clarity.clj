@@ -2,15 +2,14 @@
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
-            [clojure.data.json :as json]))
-
-(def ^:private service-url "http://localhost:3002")
+            [clojure.data.json :as json]
+            [rlc.lightcone.env :refer [CLARITY_SERVICE_URL]]))
 
 (defn get-all-events [token]
   (tap> "GETTING ALL EVENTS from CLARITY")
   (tap> token)
   (try
-    (let [response (http/get (str service-url "/events/list")
+    (let [response (http/get (str CLARITY_SERVICE_URL "/events/list")
                              {:throw-exceptions false
                               :as :json
                               :headers {"Authorization" (str "Bearer " token)}})]
@@ -28,7 +27,7 @@
 (defn get-event [uid token]
   (tap> "GETTING AN EVENT from CLARITY")
   (try
-    (let [response (http/get (str service-url "/event")
+    (let [response (http/get (str CLARITY_SERVICE_URL "/event")
                              {:query-params {:uid uid}
                               :throw-exceptions false
                               :as :json
@@ -60,7 +59,7 @@
 (defn get-event-time-value [uid token]
   (tap> "GETTING EVENT TIME VALUE from CLARITY")
   (try
-    (let [response (http/get (str service-url "/event/" uid "/time-value")
+    (let [response (http/get (str CLARITY_SERVICE_URL "/event/" uid "/time-value")
                              {:throw-exceptions false
                               :as :json
                               :headers {"Authorization" (str "Bearer " token)}})]
@@ -79,7 +78,7 @@
   (tap> "GETTING EVENT TIME from CLARITY")
   (tap> token)
   (try
-    (let [response (http/get (str service-url "/event/" uid "/time")
+    (let [response (http/get (str CLARITY_SERVICE_URL "/event/" uid "/time")
                              {:throw-exceptions false
                               :as :json
                               :headers {"Authorization" (str "Bearer " token)}})]
@@ -97,7 +96,7 @@
   (tap> "GETTING EVENT PARTICIPANTS from CLARITY")
   (tap> token)
   (try
-    (let [response (http/get (str service-url "/event/" uid "/participants")
+    (let [response (http/get (str CLARITY_SERVICE_URL "/event/" uid "/participants")
                              {:throw-exceptions false
                               :as :json
                               :headers {"Authorization" (str "Bearer " token)}})]

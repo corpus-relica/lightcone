@@ -2,11 +2,13 @@
   (:require [compojure.core :refer [defroutes context GET POST OPTIONS PUT DELETE]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
-            [rlc.lightcone.io.calendar :as calendar]
+            [rlc.lightcone.app.calendar :as calendar]
             [rlc.lightcone.io.auth :refer [authenticate-user
                                         generate-token
                                         db-get-user-by-username
-                                        create-user]]))
+                                        create-user]]
+            [rlc.lightcone.env :refer [CLARITY_SERVICE_URL]]))
+
 
 (defroutes auth-routes
   (OPTIONS "/register" _ (response/response nil))
@@ -29,6 +31,10 @@
       (tap> "LOGIN, FOOL!")
       (tap> (str "username : " username))
       (tap> (str "password : " password))
+
+      (tap> "CLARITY SERVICE URL")
+      (tap> CLARITY_SERVICE_URL)
+
       (if-let [user (authenticate-user username password)]
         (do
           (tap> "FONOFDSFDSFDSFDSF")

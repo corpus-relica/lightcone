@@ -1,4 +1,4 @@
-(ns rlc.lightcone.io.calendar
+(ns rlc.lightcone.app.calendar
   (:require [clojure.spec.alpha :as s]
             [rlc.lightcone.io.contacts :refer  [get-person-name]]
             [rlc.lightcone.io.archivist :refer [reserve-uid

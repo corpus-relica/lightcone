@@ -11,10 +11,15 @@ services:
     ports:
       - "3003:3000"  # Main backend API port
       - "9000:9000"  # nREPL port
-      - "5555:5555"  # Reveal UI port
+      - "5555:5555"  # Portal UI port
     environment:
       - ENVIRONMENT=development
       - PORT=3000
+      - ARCHIVIST_SERVICE_URL=http://archivist:3000
+      - CLARITY_SERVICE_URL=http://clarity-clj:3002
+    networks:
+      - lightcone-net  # Internal network
+      - rlc-net       # Shared network with other stack
     command: clj -M:server
 
   frontend:
@@ -28,10 +33,14 @@ services:
       - "3004:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:3000
+    networks:
+      - lightcone-net  # Only needs internal network
     depends_on:
       - backend
     command: npm run dev
 
 networks:
-  default:
+  lightcone-net:
     name: lightcone-net
+  rlc-net:
+    external: true    # This tells Docker this network already exists

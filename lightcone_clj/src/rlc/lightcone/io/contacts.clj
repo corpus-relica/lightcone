@@ -2,13 +2,13 @@
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
-            ))
+            [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL]]))
 
-(def ^:private service-url "http://localhost:3000")
+;;  TODO this namespace probably belongs under app
 
 (defn get-people []
   (try
-    (let [response (http/get (str service-url "/fact/classified")
+    (let [response (http/get (str ARCHIVIST_SERVICE_URL "/fact/classified")
                              {:query-params {:uid "990010"
                                              :recursive true}
                               :throw-exceptions false
@@ -33,7 +33,7 @@
 
 (defn get-person-name [uid]
   (try
-    (let [response (http/get (str service-url "/fact/classificationFact")
+    (let [response (http/get (str ARCHIVIST_SERVICE_URL "/fact/classificationFact")
                              {:query-params {:uid uid}
                               :throw-exceptions false
                               :as :json})]
