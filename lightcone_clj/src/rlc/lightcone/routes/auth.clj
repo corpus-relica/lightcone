@@ -26,9 +26,9 @@
   (POST "/login" request
     (let [username (get-in request [:body "username"])
           password (get-in request [:body "password"])]
-      (tap> "LOGIN")
-      (tap> username)
-      (tap> password)
+      (tap> "LOGIN, FOOL!")
+      (tap> (str "username : " username))
+      (tap> (str "password : " password))
       (if-let [user (authenticate-user username password)]
         (do
           (tap> "FONOFDSFDSFDSFDSF")

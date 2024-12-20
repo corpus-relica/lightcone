@@ -1,11 +1,10 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure                 {:mvn/version "1.11.1"}
-        org.clojure/data.json               {:mvn/version "2.4.0"}  ; Add this
+        org.clojure/data.json               {:mvn/version "2.4.0"}
         ;; rlc/clarity                         {:local/root "../../rlc_clarity"}
         clojure.java-time/clojure.java-time {:mvn/version "1.1.0"}
         cheshire/cheshire                   {:mvn/version "5.13.0"}
         clj-http/clj-http                   {:mvn/version "3.13.0"}
-        ;; Web server
         ring/ring-core                      {:mvn/version "1.13.0"}
         ring/ring-json                      {:mvn/version "0.5.1"}
         ring/ring-jetty-adapter             {:mvn/version "1.13.0"}
@@ -14,9 +13,9 @@
         buddy/buddy-auth                    {:mvn/version "3.0.1"}
         buddy/buddy-sign                    {:mvn/version "3.4.1"}
         buddy/buddy-hashers                 {:mvn/version "1.8.1"}
-        ;; Logging
-        org.slf4j/slf4j-api                {:mvn/version "2.0.9"}   ; Add this
-        org.slf4j/slf4j-simple             {:mvn/version "2.0.9"}}  ; Add this
+        org.slf4j/slf4j-api                 {:mvn/version "2.0.9"}
+        org.slf4j/slf4j-simple              {:mvn/version "2.0.9"}
+        djblue/portal                       {:mvn/version "0.50.0"}}  ; Add this
  :aliases
  {:dev {:extra-paths ["dev"]
         :jvm-opts ["-Dclojure.storm.instrumentEnable=true"
