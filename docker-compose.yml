@@ -11,7 +11,7 @@ services:
     ports:
       - "3003:3000"  # Main backend API port
       - "9000:9000"  # nREPL port
-      - "5555:5555"  # Portal UI port
+      - "5556:5555"  # Portal UI port
     environment:
       - ENVIRONMENT=development
       - PORT=3000
