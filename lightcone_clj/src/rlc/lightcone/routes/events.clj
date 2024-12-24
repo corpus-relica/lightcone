@@ -1,5 +1,5 @@
 (ns rlc.lightcone.routes.events
-  (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
+  (:require [compojure.core :refer [defroutes context GET POST PUT DELETE OPTIONS]]
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
             [rlc.lightcone.app.calendar :as calendar]
@@ -46,8 +46,9 @@
   ;;       {:events (calendar/fetch-all-events)}))
 
   (context "/api/events" []
+    (OPTIONS "/" _ (response/response nil))
     (GET "/" request
-      (tap> "Auth result:")  ; Debug log
+      (tap> "/api/events/ Auth result:")  ; Debug log
       (let [token (extract-token request)
             auth-result (auth/is-authenticated? token)]
         (tap> token)
