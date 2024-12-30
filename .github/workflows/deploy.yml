@@ -53,7 +53,7 @@ jobs:
             # Clone or pull repository (update repo URL)
             if [ ! -d ".git" ]; then
               echo "Cloning repository..."
-              git clone git@github.com:corpus-relica/lightcone.git .
+              git clone git@github.com:corpus-relica/lightcone .
             else
               echo "Updating repository..."
               git fetch origin
