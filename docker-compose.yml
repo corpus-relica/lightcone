@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   backend:
+    container_name: lightcone-server
     build:
       context: ./lightcone_clj
       dockerfile: Dockerfile.dev
@@ -18,11 +19,12 @@ services:
       - ARCHIVIST_SERVICE_URL=http://archivist:3000
       - CLARITY_SERVICE_URL=http://clarity-clj:3002
     networks:
-      - lightcone-net  # Internal network
-      - rlc-net       # Shared network with other stack
+      - lightcone-net
+      - rlc-net
     command: clj -M:server
 
   frontend:
+    container_name: lightcone-web-ui
     build:
       context: ./lightcone_ts
       dockerfile: Dockerfile.dev
@@ -32,9 +34,10 @@ services:
     ports:
       - "3004:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:3000
+      - NEXT_PUBLIC_ARCHIVIST_URL=http://backend:3000
+      - NEXT_PUBLIC_LIGHTCONE_SERVER_URL=http://lightcone-server:3003
     networks:
-      - lightcone-net  # Only needs internal network
+      - lightcone-net
     depends_on:
       - backend
     command: npm run dev

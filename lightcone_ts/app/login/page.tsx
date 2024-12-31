@@ -17,6 +17,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+console.log("/////////////// MUTHER FUCKING VARIABLES !!!!!!!!!!!! /////////")
+console.log(process.env.NEXT_PUBLIC_ARCHIVIST_URL)
+console.log(process.env.NEXT_PUBLIC_LIGHTCONE_SERVER_URL)
+
 export default function LoginForm() {
 
   const { isAuthenticated , login} = useContext(AuthContext);
