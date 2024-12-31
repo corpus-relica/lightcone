@@ -39,9 +39,7 @@ export default function LoginForm() {
     setError("");
 
     try {
-      // Send login request to your Clojure backend
       const response = await fetch(process.env.NEXT_PUBLIC_LIGHTCONE_SERVER_URL + "/login", {
-      // const response = await fetch("http://64.23.130.139:3003/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
