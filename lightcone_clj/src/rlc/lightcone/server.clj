@@ -41,6 +41,7 @@
     (println "Starting server on port" port)
 
     (start-server port)
+    (println "Server started on port" port)
 
     (tap> "Started")
       (if-let [user (authenticate-user "john" "changeme")]
