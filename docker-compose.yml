@@ -16,7 +16,7 @@ services:
     environment:
       - ENVIRONMENT=development
       - PORT=3000
-      - ARCHIVIST_SERVICE_URL=http://64.23.130.139:3000
+      - ARCHIVIST_SERVICE_URL=http://archivist:3000
       - CLARITY_SERVICE_URL=http://clarity-clj:3002
     networks:
       - lightcone-net
