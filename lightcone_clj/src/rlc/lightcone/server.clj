@@ -4,7 +4,13 @@
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
             [rlc.lightcone.routes.core :refer [app-routes]]
             [ring.middleware.cors :refer [wrap-cors]]
-            [portal.api :as p]))
+            [portal.api :as p]
+
+[rlc.lightcone.io.auth :refer [authenticate-user
+                                        generate-token
+                                        db-get-user-by-username
+                                        create-user]]
+            ))
 
 ;; Add middleware in the correct order
 (def app
@@ -33,4 +39,10 @@
 
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
     (println "Starting server on port" port)
-    (start-server port)))
+    (start-server port))
+
+      (if-let [user (authenticate-user "john" "changeme")]
+        (do
+          (tap> "FONOFDSFDSFDSFDSF")
+          (tap> user))
+        (tap> "Invalid credentials")))
