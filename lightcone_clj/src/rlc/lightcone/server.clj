@@ -27,7 +27,7 @@
 
 (defn start-server [port]
   (jetty/run-jetty app {:port port  ; Remove the var quote here
-                        :join? true
+                        :join? false
                         :max-header-size 65536}))
 
 (defn -main [& args]
@@ -35,7 +35,7 @@
   (p/open {:port 5555})
   (add-tap #'p/submit)
 
-  (tap> "Starting Lightcone server...fool")
+  (tap> "Starting Lightcone server...foolishness")
 
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
     (println "Starting server on port" port)
