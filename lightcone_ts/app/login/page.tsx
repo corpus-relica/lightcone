@@ -17,10 +17,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-console.log("/////////////// MUTHER FUCKING VARIABLES !!!!!!!!!!!! /////////")
-console.log(process.env.NEXT_PUBLIC_ARCHIVIST_URL)
-console.log(process.env.NEXT_PUBLIC_LIGHTCONE_SERVER_URL)
-
 export default function LoginForm() {
 
   const { isAuthenticated , login} = useContext(AuthContext);
@@ -44,7 +40,7 @@ export default function LoginForm() {
 
     try {
       // Send login request to your Clojure backend
-      const response = await fetch("http://localhost:3003/login", {
+      const response = await fetch(process.env.NEXT_PUBLIC_LIGHTCONE_SERVER_URL + "/login", {
       // const response = await fetch("http://64.23.130.139:3003/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
