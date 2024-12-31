@@ -13,8 +13,6 @@
       (response/content-type index "text/html")
       (response/not-found "Index page not found")))
 
- (GET "/test" []
-       (response/response {:message "test"}))
   ;; API routes from other namespaces
   event-routes
   person-routes

@@ -12,14 +12,8 @@
 
 ;; In routes/auth.clj
 (defroutes auth-routes
-  (OPTIONS "/login" _
-    (-> (response/response nil)
-        (response/header "Access-Control-Allow-Origin" "http://64.23.130.139:3004")
-        (response/header "Access-Control-Allow-Methods" "POST, OPTIONS")
-        (response/header "Access-Control-Allow-Headers" "Content-Type")))
-
+  (OPTIONS "/login" _ (response/response nil))
   (POST "/login" request
+    ;; First, just return a test response to verify basic routing
     (tap> "Login attempt received")
-    (-> (response/response {:message "Login endpoint reached"})
-        (response/header "Access-Control-Allow-Origin" "http://64.23.130.139:3004")
-        (response/content-type "application/json"))))
+    (response/response {:message "Login endpoint reached"})))

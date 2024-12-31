@@ -6,14 +6,18 @@
             [ring.middleware.cors :refer [wrap-cors]]
             [portal.api :as p]))
 
+;; Add middleware in the correct order
 (def app
-  (-> #'app-routes
-      wrap-json-response
-      (wrap-json-body {:keywords? true})
-      (wrap-cors :access-control-allow-origin [#"http://64.23.130.139:3004"]
-                :access-control-allow-methods [:post :options]
-                :access-control-allow-headers ["Content-Type"]
-                :access-control-expose-headers ["Content-Type"])))
+  (-> #'app-routes  ; Note the var quote here
+      (wrap-cors
+       :access-control-allow-origin [#"http://localhost:3004"
+                                   #"http://64.23.130.139:3004"
+                                   #"http://localhost:3003"
+                                   #"http://64.23.130.139:3003"]
+       :access-control-allow-methods [:get :put :post :delete :options]
+       :access-control-allow-headers ["Content-Type" "Authorization"])  ; Added Authorization
+      (wrap-json-body {:keywords? true})  ; Add keywords? true
+      wrap-json-response))
 
 (defn start-server [port]
   (jetty/run-jetty app {:port port  ; Remove the var quote here
