@@ -25,9 +25,8 @@
   (p/open {:port 5555})
   (add-tap #'p/submit)
 
+  (tap> "Starting Lightcone server...")
+
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
     (println "Starting server on port" port)
     (start-server port)))
-
-
-(print "EAT SHIT")
