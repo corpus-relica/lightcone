@@ -35,14 +35,16 @@
   (p/open {:port 5555})
   (add-tap #'p/submit)
 
-  (tap> "Starting Lightcone server...")
+  (tap> "Starting Lightcone server...fool")
 
   (let [port (Integer/parseInt (or (System/getenv "PORT") "3000"))]
     (println "Starting server on port" port)
-    (start-server port))
 
+    (start-server port)
+
+    (tap> "Started")
       (if-let [user (authenticate-user "john" "changeme")]
         (do
           (tap> "FONOFDSFDSFDSFDSF")
           (tap> user))
-        (tap> "Invalid credentials")))
+        (tap> "Invalid credentials"))))
