@@ -41,6 +41,9 @@
                                :accept :json
                                :throw-exceptions false
                                :as :json})]
+      (tap> "AUTHENTICATE USER")
+      (tap> login-url)
+      (tap> response)
       (if (= (:status response) 200)
         (:access_token (:body response))
         false))
