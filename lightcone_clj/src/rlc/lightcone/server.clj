@@ -6,27 +6,23 @@
             [ring.middleware.cors :refer [wrap-cors]]
             [portal.api :as p]))
 
-;; Add middleware
+;; Add middleware in the correct order
 (def app
-  (-> app-routes
-      (fn [req]
-        (println "Incoming request:" (:uri req) (:request-method req))  ; Basic println for immediate feedback
-        (tap> {:msg "Incoming request"
-               :uri (:uri req)
-               :method (:request-method req)})
-        (app-routes req))
-      (wrap-cors :access-control-allow-origin [#"http://localhost:3004"
-                                             #"http://64.23.130.139:3004"
-                                             #"http://localhost:3003"
-                                             #"http://64.23.130.139:3003"]
-                :access-control-allow-methods [:get :put :post :delete :options])
-      wrap-json-body
+  (-> #'app-routes  ; Note the var quote here
+      (wrap-cors
+       :access-control-allow-origin [#"http://localhost:3004"
+                                   #"http://64.23.130.139:3004"
+                                   #"http://localhost:3003"
+                                   #"http://64.23.130.139:3003"]
+       :access-control-allow-methods [:get :put :post :delete :options]
+       :access-control-allow-headers ["Content-Type" "Authorization"])  ; Added Authorization
+      (wrap-json-body {:keywords? true})  ; Add keywords? true
       wrap-json-response))
 
 (defn start-server [port]
-  (jetty/run-jetty #'app {:port port
-                          :join? true
-                          :max-header-size 65536}))
+  (jetty/run-jetty app {:port port  ; Remove the var quote here
+                        :join? true
+                        :max-header-size 65536}))
 
 (defn -main [& args]
   ;; Start portal with web UI
