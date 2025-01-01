@@ -18,6 +18,12 @@ jobs:
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
+      - name: Debug Connection
+        run: |
+          echo "Testing basic TCP connection..."
+          nc -zv ${{ secrets.SERVER_HOST }} 22
+          echo "Testing SSH handshake..."
+          ssh -v -o ConnectTimeout=10 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} echo "SSH works"
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
