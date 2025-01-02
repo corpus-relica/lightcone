@@ -23,6 +23,14 @@ jobs:
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      # Add runner's IP to existing firewall first
+      - name: Doorkeeper open
+        uses: patoroco/doorkeeper@master
+        with:
+          digitaloceanToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          firewallName: "web-firewall"
+          actionToDo: "add"
+          dryRun: false
       - name: Deploy to Digital Ocean
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -65,3 +73,12 @@ jobs:
             docker-compose down || true
             docker-compose build
             docker-compose up -d
+      # Remove runner's IP from new firewall
+      - name: Doorkeeper close
+        if: always()
+        uses: patoroco/doorkeeper@master
+        with:
+          digitaloceanToken: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          firewallName: "web-firewall"
+          actionToDo: "remove"
+          dryRun: false
