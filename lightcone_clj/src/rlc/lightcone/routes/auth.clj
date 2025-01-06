@@ -31,6 +31,7 @@
       (tap> "LOGIN, FOOL!")
       (tap> (str "username : " username))
       (tap> (str "password : " password))
+      (tap> (:body request))
 
       (tap> "CLARITY SERVICE URL")
       (tap> CLARITY_SERVICE_URL)
