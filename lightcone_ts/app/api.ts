@@ -3,7 +3,7 @@ import axios from 'axios';
 console.log("MUTHER FUCKING TOKEN",localStorage.getItem('token'));
 
 const authAxios = () => axios.create({
-  baseURL: 'http://localhost:3003',
+  baseURL: process.env.NEXT_PUBLIC_LIGHTCONE_SERVER_URL,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
