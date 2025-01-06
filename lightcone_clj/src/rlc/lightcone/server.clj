@@ -18,8 +18,9 @@
       (wrap-cors
        :access-control-allow-origin [#"http://localhost:3004"
                                    #"http://64.23.130.139:3004"
-                                   #"http://localhost:3003"
-                                   #"http://64.23.130.139:3003"]
+                                   ;; #"http://localhost:3003"
+                                   ;; #"http://64.23.130.139:3003"
+                                     ]
        :access-control-allow-methods [:get :put :post :delete :options]
        :access-control-allow-headers ["Content-Type" "Authorization"])  ; Added Authorization
       (wrap-json-body {:keywords? true})  ; Add keywords? true
