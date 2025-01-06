@@ -26,8 +26,8 @@
 
   (OPTIONS "/login" _ (response/response nil))
   (POST "/login" request
-    (let [username (get-in request [:body "username"])
-          password (get-in request [:body "password"])]
+    (let [username (get-in request [:body :username])
+          password (get-in request [:body :password])]
       (tap> "LOGIN, FOOL!")
       (tap> (str "username : " username))
       (tap> (str "password : " password))
