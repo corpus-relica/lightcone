@@ -17,10 +17,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "CRG - Lightcone",
-  description: "",
-};
+// export const metadata: Metadata = {
+//   title: "CRG - Lightcone",
+//   description: "",
+// };
 
 export default function RootLayout({
   children,
