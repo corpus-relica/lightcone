@@ -10,6 +10,7 @@ const authAxios = () => axios.create({
 });
 
 export const getEvents = () => authAxios().get('/api/events');
+export const getPeople = () => authAxios().get('/api/persons');
 
 // // Example usage
 // authAxios.get('/api/events')

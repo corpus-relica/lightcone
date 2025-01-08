@@ -14,8 +14,8 @@
                                                            get-all-events
                                                            get-event-time
                                                            get-event-time-value
-                                                           get-event-participants
-                                                           ]]))
+                                                           get-event-participants]]
+             [rlc.lightcone.http.client :as client]))
 
 ;; Domain level specs
 (s/def ::uid int?)

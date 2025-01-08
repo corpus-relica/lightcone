@@ -7,7 +7,7 @@ import { AuthContext } from '../AuthContext';
 import EventsList from "@/components/EventsList";
 import EventForm from "@/components/EventForm";
 import Timeline from "@/components/Timeline";
-import { getEvents } from "../api";
+import { getEvents, getPeople } from "../api";
 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -18,6 +18,7 @@ const Dashboard = () => {
   const [selectedEvent, setSelectedEvent] = useState(null); // [event, setEvent
   const [foobarbaz, setFoobarbaz] = useState(null); // [event, setEvent
   const [events, setEvents] = useState([]);
+  const [people, setPeople] = useState([]);
   const { logout} = useContext(AuthContext);
 
 
@@ -33,6 +34,18 @@ const Dashboard = () => {
          // Handle other errors
        }
     });
+
+    // getPeople().then((data) => {
+    //   console.log(data.data);
+    //   setPeople(data.data);
+    // }).catch((error) => {
+    //    if (error.response && error.response.status === 419) {
+    //      // Token has expired, log the user out
+    //      logout();
+    //    } else {
+    //      // Handle other errors
+    //    }
+    // });
   }, []);
 
 

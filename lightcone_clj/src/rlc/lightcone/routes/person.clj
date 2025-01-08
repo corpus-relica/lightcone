@@ -1,18 +1,16 @@
 (ns rlc.lightcone.routes.person
   (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
             [ring.util.response :as response]
-            [rlc.lightcone.io.contacts :as contacts]))
+            [rlc.lightcone.io.contacts :as contacts]
+            [rlc.lightcone.middleware.auth :refer [with-auth]]))
 
 (defroutes person-routes
-  (context "/api/person" []
+  (context "/api/persons" []
     (GET "/" []
-         (let [foo (map (fn [x] {:id (:uid x)
-                                           :name (:name x)})
-                        (:body (contacts/get-people)))]
-           (tap> "RESPONSE FROM PERSONS API:")
-            (tap> foo)
-           (response/response {:person foo}))
-         )
-
+         (with-auth #(do
+                        (let [foo (map (fn [x] {:id (:uid x)
+                                                :name (:name x)})
+                                       (:body (contacts/get-people %)))]
+                          (response/response {:persons foo})))))
     (GET "/:id" [id]
-      (response/response {:person {:id id}}))))
+         (with-auth #(response/response {:person {:id id}})))))

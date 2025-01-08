@@ -3,14 +3,8 @@
             [ring.util.response :as response]
             [clojure.walk :refer [keywordize-keys]]
             [rlc.lightcone.app.calendar :as calendar]
-            [rlc.lightcone.io.auth :as auth]))
-
-(defn extract-token [request]
-  (let [headers (:headers request)
-        header-value (get headers "authorization")]
-    (if header-value
-      (second (clojure.string/split header-value #" "))
-      nil)))
+            [rlc.lightcone.io.auth :as auth]
+            [rlc.lightcone.util :refer [extract-token]]))
 
 (defroutes event-routes
   (context "/api/event/title" []
@@ -46,7 +40,6 @@
   ;;       {:events (calendar/fetch-all-events)}))
 
   (context "/api/events" []
-    (OPTIONS "/" _ (response/response nil))
     (GET "/" request
       (tap> "/api/events/ Auth result:")  ; Debug log
       (let [token (extract-token request)
