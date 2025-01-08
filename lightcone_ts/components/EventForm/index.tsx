@@ -11,12 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { X, Users, Calendar } from "lucide-react";
 
-const EventForm = ({ onSubmit, initialData = null }) => {
+const EventForm = ({ onSubmit, initialData = null, availableParticipants=[] }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [date, setDate] = useState(initialData?.time || '');
   const [note, setNote] = useState(initialData?.note || '');
   const [participants, setParticipants] = useState(initialData?.participants || []);
   const [isParticipantMenuOpen, setIsParticipantMenuOpen] = useState(false);
+
+  console.log("AVAILABLE PARTICIPANTS -->",availableParticipants);
 
   useEffect(() => {
     console.log("INITIAL DATA -->");
@@ -29,14 +31,6 @@ const EventForm = ({ onSubmit, initialData = null }) => {
       setParticipants(initialData.participants);
     }
   }, [initialData]);
-
-  // Mock participant data - replace with your actual data
-  const availableParticipants = [
-    { id: 1000000084, name: "Alice Johnson" },
-    { id: 1000000696, name: "Bob Smith" },
-    { id: 1000000070, name: "Carol White" },
-    { id: 1000000081, name: "David Brown" },
-  ];
 
   const removeParticipant = (idToRemove) => {
     setParticipants(participants.filter(id => id !== idToRemove));

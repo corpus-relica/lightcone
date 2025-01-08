@@ -35,17 +35,17 @@ const Dashboard = () => {
        }
     });
 
-    // getPeople().then((data) => {
-    //   console.log(data.data);
-    //   setPeople(data.data);
-    // }).catch((error) => {
-    //    if (error.response && error.response.status === 419) {
-    //      // Token has expired, log the user out
-    //      logout();
-    //    } else {
-    //      // Handle other errors
-    //    }
-    // });
+    getPeople().then((data) => {
+      console.log(data.data);
+      setPeople(data.data.persons);
+    }).catch((error) => {
+       if (error.response && error.response.status === 419) {
+         // Token has expired, log the user out
+         logout();
+       } else {
+         // Handle other errors
+       }
+    });
   }, []);
 
 
@@ -88,7 +88,9 @@ const Dashboard = () => {
                 {/* Form Section */}
                 <div className="flex-1 p-4">
                   <div className="bg-card h-full rounded p-4">
-                    <EventForm initialData={foobarbaz} onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
+                    <EventForm initialData={foobarbaz}
+                                availableParticipants={people}
+                                onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
                   </div>
                 </div>
               </div>
