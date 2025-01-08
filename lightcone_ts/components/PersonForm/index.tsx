@@ -1,0 +1,76 @@
+import React, { useState,useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { X, Users, Calendar } from "lucide-react";
+
+const PersonForm = ({ onSubmit, initialData}) => {
+  const [uid, setUID] = useState(initialData?.id || 0);
+  const [name, setName] = useState(initialData?.name || '');
+
+  useEffect(() => {
+    console.log("INITIAL DATA -->");
+    console.log(initialData);
+
+    if (initialData) {
+      setUID(initialData.id);
+      setName(initialData.name);
+    }else{
+      setUID(0);
+      setName('');
+    }
+  }, [initialData]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      uid:uid,
+      name,
+    };
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="bg-card rounded-lg shadow-sm p-6">
+      <div>
+        prson uid: {uid}
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold">
+            {initialData ? 'Edit Person' : 'Create New Person'}
+          </h2>
+          <Separator />
+        </div>
+
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              Person Name
+            </label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter person name"
+              className="w-full"
+            />
+          </div>
+        </div>
+        <div className="pt-4">
+          <Button type="submit" className="w-full">
+            {initialData ? 'Update Person' : 'Create Person'}
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default PersonForm;

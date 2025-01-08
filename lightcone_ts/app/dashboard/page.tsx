@@ -1,18 +1,15 @@
 "use client";
 
 import { useEffect, useState, useContext } from "react";
+
 import { ProtectedRoute } from '../ProtectedRoute';
-import { Button } from "@/components/ui/button";
 import { AuthContext } from '../AuthContext';
-import EventsList from "@/components/EventsList";
-import EventForm from "@/components/EventForm";
-import Timeline from "@/components/Timeline";
 import { getEvents, getPeople } from "../api";
+import EventsDash from "@/components/EventsDash";
+import PeopleDash from "@/components/PeopleDash";
 
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button";
 const Dashboard = () => {
 
   const [selectedEvent, setSelectedEvent] = useState(null); // [event, setEvent
@@ -59,66 +56,24 @@ const Dashboard = () => {
 
   return (
     <ProtectedRoute>
-      <div className="h-screen flex flex-col">
-        {/* Header */}
-        <header className="border-b h-14 flex items-center px-4 shrink-0">
-          <h1 className="font-bold text-xl">Event Management</h1>
-        </header>
-
-        {/* Main Content */}
-        <ResizablePanelGroup direction="horizontal" className="flex-1">
-          {/* Main Content Area */}
-          <ResizablePanel defaultSize={80}>
-            <div className="h-full flex flex-col">
-              {/* Timeline Section */}
-              <div className="h-1/3 border-b">  {/* removed p-4 */}
-                <div className="h-full w-full">  {/* removed bg-muted, rounded, flex classes */}
-                  <Timeline events={events} setSelectedEvent={setSelectedEvent} />
-                </div>
-              </div>
-
-              {/* Bottom Section */}
-              <div className="flex-1 flex">
-                {/* Events List */}
-                <div className="w-1/4 border-r">
-                  <div className="p-4 font-semibold border-b">Events List</div>
-                  <EventsList events={events}/>
-                </div>
-
-                {/* Form Section */}
-                <div className="flex-1 p-4">
-                  <div className="bg-card h-full rounded p-4">
-                    <EventForm initialData={foobarbaz}
-                                availableParticipants={people}
-                                onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ResizablePanel>
-
-          <ResizableHandle />
-
-          {/* Chat Panel - Full Height */}
-          <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
-            <div className="h-full flex flex-col">
-              <div className="p-4 font-semibold border-b">Chat Interface</div>
-              <ScrollArea className="flex-1">
-                <div className="p-4">
-                  <div className="space-y-4">
-                    <div className="bg-muted p-2 rounded">Chat messages will go here</div>
-
-                    <Button type="submit" onClick={logout}>
-                      logout
-                    </Button>
-
-                  </div>
-                </div>
-              </ScrollArea>
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </div>
+      <Button type="submit" onClick={logout}>
+        logout
+      </Button>
+      <Tabs defaultValue="events" className="w-full">
+        <TabsList>
+          <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="people">People</TabsTrigger>
+        </TabsList>
+        <TabsContent value="events">
+          <EventsDash events={events}
+                      foobarbaz={foobarbaz}
+                      people={people}
+                      setSelectedEvent={setSelectedEvent}/>
+        </TabsContent>
+        <TabsContent value="people" className="w-full">
+          <PeopleDash people={people} />
+        </TabsContent>
+      </Tabs>
     </ProtectedRoute>
   )
 };
