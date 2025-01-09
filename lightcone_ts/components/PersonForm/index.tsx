@@ -1,24 +1,18 @@
 import React, { useState,useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { X, Users, Calendar } from "lucide-react";
 
 const PersonForm = ({ onSubmit, initialData}) => {
   const [uid, setUID] = useState(initialData?.id || 0);
   const [name, setName] = useState(initialData?.name || '');
 
   useEffect(() => {
-    console.log("INITIAL DATA -->");
-    console.log(initialData);
-
     if (initialData) {
       setUID(initialData.id);
       setName(initialData.name);
