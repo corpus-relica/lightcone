@@ -21,7 +21,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     getEvents().then((data) => {
-      console.log(data.data);
       setEvents(data.data);
     }).catch((error) => {
        if (error.response && error.response.status === 419) {
@@ -33,7 +32,6 @@ const Dashboard = () => {
     });
 
     getPeople().then((data) => {
-      console.log(data.data);
       setPeople(data.data.persons);
     }).catch((error) => {
        if (error.response && error.response.status === 419) {

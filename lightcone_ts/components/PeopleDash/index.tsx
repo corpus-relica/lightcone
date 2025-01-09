@@ -15,8 +15,6 @@ const PeopleDash = ({ people }) => {
 
   const selectPerson = (uid:number) => {
     const person = people.find((p:any) => p.id === uid);
-    console.log("PERSON -----> ", person)
-    //  @ts-ignore
     setSelectedPerson(person);
   }
 
