@@ -17,6 +17,7 @@
   (-> #'app-routes  ; Note the var quote here
       (wrap-cors
        :access-control-allow-origin [#"http://localhost:3004"
+                                     #"http://localhost:5173"
                                      #"http://64.23.130.139:3004"
                                   ;; #"http://localhost:3003"
                                   ;; #"http://64.23.130.139:3003"
