@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { useEffect, useState, useContext } from "react";
-// import { AuthContext } from '../AuthContext';
-// import { useRouter } from 'next/navigation';
+import { AuthContext } from '../../AuthContext';
 
-import {Link} from "react-router"
+import {Link, useNavigate } from "react-router"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -17,20 +16,21 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+  let navigate = useNavigate();
 
-  // const { isAuthenticated , login} = useContext(AuthContext);
+  const { isAuthenticated , login} = useContext(AuthContext);
   // const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/dashboard');
-  //   }
-  // }, [isAuthenticated]);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard")
+    }
+  }, [isAuthenticated]);
 
 
   const handleSubmit = async (e) => {
@@ -46,17 +46,14 @@ const LoginPage = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      console.log("RESPONSE", response.ok)
-
-      // if (response.ok) {
-      //   const data = await response.json();
-      //   console.log("DATA", data)
-      //   // login(data.token);
-      //   // Login successful, redirect to dashboard or update authentication state
-      // } else {
-      //   // Login failed, display error message
-      //   setError("Invalid username or password");
-      // }
+      if (response.ok) {
+        const data = await response.json();
+        login(data.token);
+        // Login successful, redirect to dashboard or update authentication state
+      } else {
+        // Login failed, display error message
+        setError("Invalid username or password");
+      }
     } catch (error) {
       setError("An error occurred. Please try again.");
       console.error(error);
@@ -110,9 +107,6 @@ const LoginPage = () => {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Loading..." : "Login"}
             </Button>
-            {/*<Button variant="outline" className="w-full">
-              Login with Google
-            </Button>*/}
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?
