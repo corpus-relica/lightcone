@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 
-// import { ProtectedRoute } from '../ProtectedRoute';
+import { ProtectedRoute } from '../../ProtectedRoute';
 import { AuthContext } from '../../AuthContext';
 import { getEvents, getPeople } from "../../api";
 import EventsDash from "@/components/EventsDash";
@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
 
-  const [selectedEvent, setSelectedEvent] = useState(null); // [event, setEvent
-  const [foobarbaz, setFoobarbaz] = useState(null); // [event, setEvent
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [foobarbaz, setFoobarbaz] = useState(null);
   const [events, setEvents] = useState([]);
   const [people, setPeople] = useState([]);
   const { logout} = useContext(AuthContext);
@@ -51,8 +51,7 @@ const DashboardPage = () => {
   }, [selectedEvent]);
 
   return (
-    // <ProtectedRoute>
-    <>
+    <ProtectedRoute>
       <Button type="submit" onClick={logout}>
         logout
       </Button>
@@ -71,8 +70,7 @@ const DashboardPage = () => {
           <PeopleDash people={people} />
         </TabsContent>
       </Tabs>
-    </>
-    // </ProtectedRoute>
+    </ProtectedRoute>
   )
 }
 

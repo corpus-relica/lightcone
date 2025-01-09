@@ -3,11 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 export const AuthContext = createContext({ isAuthenticated: false, setIsAuthenticated:()=>{},login: () => {}, logout: () => {}});
 
 export const AuthProvider = (props) => {
-  console.log("AUTH PROVIDER");
-  console.log(props.isAuthenticated);
-
   const { children } = props;
-
   const [isAuthenticated, setIsAuthenticated] = useState(props.isAuthenticated);
 
   useEffect(() => {
@@ -18,17 +14,11 @@ export const AuthProvider = (props) => {
   }, []);
 
   const login = (token) => {
-    console.log("LOGIN");
-    // Send login request to Clojure backend
-    // If successful, update authentication state
     localStorage.setItem('token', token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    console.log("LOGOUT");
-    // Send logout request to Clojure backend
-    // Update authentication state
     localStorage.removeItem('token');
     setIsAuthenticated(false);
   };
