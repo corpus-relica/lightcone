@@ -1,45 +1,52 @@
 import { useEffect, useState, useContext } from "react";
 
-import { ProtectedRoute } from '../../ProtectedRoute';
 import { AuthContext } from '../../AuthContext';
 import { getEvents, getPeople } from "../../api";
 import EventsDash from "@/components/EventsDash";
 import PeopleDash from "@/components/PeopleDash";
+
+import { usePeopleStore } from "@/store/people";
+import { useEventsStore } from "@/store/events";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
+  const { people, /*loading,*/ fetchPeople } = usePeopleStore();
+  const { events, /*loading,*/ fetchEvents } = useEventsStore();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [foobarbaz, setFoobarbaz] = useState(null);
-  const [events, setEvents] = useState([]);
-  const [people, setPeople] = useState([]);
+  // const [events, setEvents] = useState([]);
+  // const [people, setPeople] = useState([]);
   const { logout} = useContext(AuthContext);
 
   useEffect(() => {
-    getEvents().then((data) => {
-      setEvents(data.data);
-    }).catch((error) => {
-       if (error.response && error.response.status === 419) {
-         // Token has expired, log the user out
-         logout();
-       } else {
-         // Handle other errors
-       }
-    });
+    fetchEvents();
+    // getEvents().then((data) => {
+    //   setEvents(data.data);
+    // }).catch((error) => {
+    //    if (error.response && error.response.status === 419) {
+    //      // Token has expired, log the user out
+    //      logout();
+    //    } else {
+    //      // Handle other errors
+    //    }
+    // });
 
-    getPeople().then((data) => {
-      setPeople(data.data.persons);
-    }).catch((error) => {
-       if (error.response && error.response.status === 419) {
-         // Token has expired, log the user out
-         logout();
-       } else {
-         // Handle other errors
-       }
-    });
+    fetchPeople();
+  //   getPeople().then((data) => {
+  //     setPeople(data.data.persons);
+  //   }).catch((error) => {
+  //      if (error.response && error.response.status === 419) {
+  //        // Token has expired, log the user out
+  //        logout();
+  //      } else {
+  //        // Handle other errors
+  //      }
+  //   });
+
   }, []);
 
   useEffect(() => {
@@ -51,7 +58,8 @@ const DashboardPage = () => {
   }, [selectedEvent]);
 
   return (
-    <ProtectedRoute>
+    <>
+      foobarbaz
       <Button type="submit" onClick={logout}>
         logout
       </Button>
@@ -70,7 +78,7 @@ const DashboardPage = () => {
           <PeopleDash people={people} />
         </TabsContent>
       </Tabs>
-    </ProtectedRoute>
+      </>
   )
 }
 

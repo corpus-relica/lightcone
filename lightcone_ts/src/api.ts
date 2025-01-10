@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-console.log("MUTHER FUCKING TOKEN",localStorage.getItem('token'));
-
 const authAxios = () => axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_LIGHTCONE_SERVER_URL,
   headers: {
@@ -9,8 +7,15 @@ const authAxios = () => axios.create({
   },
 });
 
-export const getEvents = () => authAxios().get('/api/events');
-export const getPeople = () => authAxios().get('/api/persons');
+export const getEvents = async () => {
+  const res = await authAxios().get('/api/events');
+  return res.data;
+}
+
+export const getPeople = async () => {
+  const res = await authAxios().get('/api/persons')
+  return res.data.persons
+};
 
 // // Example usage
 // authAxios.get('/api/events')
