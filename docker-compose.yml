@@ -26,10 +26,10 @@ services:
   frontend:
     container_name: lightcone-web-ui
     build:
-      context: ./my-app
+      context: ./lightcone_ts
       dockerfile: Dockerfile.dev
     volumes:
-      - ./my-app:/src  # This matches the WORKDIR in Dockerfile
+      - ./lightcone_ts:/src  # This matches the WORKDIR in Dockerfile
       - /src/node_modules  # Update this to match WORKDIR
     ports:
       - "3004:5173"
