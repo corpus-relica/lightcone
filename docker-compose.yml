@@ -34,10 +34,10 @@ services:
     ports:
       - "3004:5173"
     environment:
-      # - VITE_PUBLIC_ARCHIVIST_URL=http://64.23.130.139:3000
-      # - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://64.23.130.139:3003
-      - VITE_PUBLIC_ARCHIVIST_URL=http://localhost:3000
-      - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://localhost:3003
+      - VITE_PUBLIC_ARCHIVIST_URL=http://64.23.130.139:3000
+      - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://64.23.130.139:3003
+      # - VITE_PUBLIC_ARCHIVIST_URL=http://localhost:3000
+      # - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://localhost:3003
     networks:
       - lightcone-net
     depends_on:
