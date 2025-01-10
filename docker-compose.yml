@@ -26,22 +26,23 @@ services:
   frontend:
     container_name: lightcone-web-ui
     build:
-      context: ./lightcone_ts
+      context: ./my-app
       dockerfile: Dockerfile.dev
     volumes:
-      - ./lightcone_ts:/app
-      - /app/node_modules
+      - ./my-app:/src  # This matches the WORKDIR in Dockerfile
+      - /src/node_modules  # Update this to match WORKDIR
     ports:
-      - "3004:3000"
+      - "3004:5173"
     environment:
-      - NEXT_PUBLIC_ARCHIVIST_URL=http://64.23.130.139:3000
-      - NEXT_PUBLIC_LIGHTCONE_SERVER_URL=http://64.23.130.139:3003
-      # - NEXT_PUBLIC_LIGHTCONE_SERVER_URL=http://localhost:3003
+      # - VITE_PUBLIC_ARCHIVIST_URL=http://64.23.130.139:3000
+      # - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://64.23.130.139:3003
+      - VITE_PUBLIC_ARCHIVIST_URL=http://localhost:3000
+      - VITE_PUBLIC_LIGHTCONE_SERVER_URL=http://localhost:3003
     networks:
       - lightcone-net
     depends_on:
       - backend
-    command: npm run dev
+    command: npm run dev -- --host 0.0.0.0
 
 networks:
   lightcone-net:
