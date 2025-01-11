@@ -6,7 +6,7 @@ import PersonForm from "@/components/PersonForm";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
-const PeopleDash = ({ people, onSubmit }) => {
+const PeopleDash = ({ people, onSubmit, onDelete}) => {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   // const onSubmit = (data:any) => {
@@ -43,7 +43,7 @@ const PeopleDash = ({ people, onSubmit }) => {
         <main className="flex-1 p-4">
           <ResizablePanelGroup direction='vertical'>
             <ResizablePanel>
-              <PersonForm onSubmit={onSubmit} initialData={selectedPerson}/>
+              <PersonForm onSubmit={onSubmit} initialData={selectedPerson} onDelete={onDelete}/>
             </ResizablePanel>
           </ResizablePanelGroup>
         </main>

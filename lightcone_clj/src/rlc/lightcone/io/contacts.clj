@@ -2,7 +2,8 @@
   (:require [clj-http.client :as http]
             [ring.util.response :as response]
             ;; [clojure.tools.logging :as log]
-            [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL]]
+            [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL
+                                       CLARITY_SERVICE_URL]]
             [rlc.lightcone.http.client :as client]))
 
 ;;  TODO this namespace probably belongs under app
@@ -44,6 +45,18 @@
                      (let [fact (:fact response-body)]
                        {:uid (:lh_object_uid fact)
                         :name (:lh_object_name fact)}))}))
+
+(defn update-person [token body]
+  (client/auth-put
+    (str ARCHIVIST_SERVICE_URL "/fact")
+    token
+    body))
+
+(defn delete-person [token uid]
+  (tap> "DELETING PERSON @ CLARITY")
+  (client/auth-delete
+    (str CLARITY_SERVICE_URL "/physical-object/" uid)
+    token))
 
 ;; (defn update-person [token body]
 ;;   (client/auth-put

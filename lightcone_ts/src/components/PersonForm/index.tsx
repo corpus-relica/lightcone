@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 
-const PersonForm = ({ onSubmit, initialData}) => {
+const PersonForm = ({ onSubmit, initialData, onDelete}) => {
   const [uid, setUID] = useState(initialData?.id || 0);
   const [name, setName] = useState(initialData?.name || '');
 
@@ -30,6 +30,11 @@ const PersonForm = ({ onSubmit, initialData}) => {
     };
     onSubmit(formData);
   };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    onDelete(uid);
+  }
 
   return (
     <div className="bg-card rounded-lg shadow-sm p-6">
@@ -58,9 +63,22 @@ const PersonForm = ({ onSubmit, initialData}) => {
           </div>
         </div>
         <div className="pt-4">
-          <Button type="submit" className="w-full">
-            {initialData ? 'Update Person' : 'Create Person'}
-          </Button>
+          {initialData ?
+            <>
+            <Button type='submit' className="w-full">
+              Update Person
+            </Button>
+            <Button type='button' onClick={handleDelete} className="w-full bg-red-600">
+              Delete Person
+            </Button>
+            </>
+           :
+            <>
+            <Button type='submit' className="w-full">
+              Create Person
+            </Button>
+            </>
+          }
         </div>
       </form>
     </div>

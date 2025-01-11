@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
-  const { people, /*loading,*/ fetchPeople, createPerson, updatePerson } = usePeopleStore();
+  const { people, /*loading,*/ fetchPeople, createPerson, updatePerson, destroyPerson } = usePeopleStore();
   const { events, /*loading,*/ fetchEvents } = useEventsStore();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -66,6 +66,13 @@ const DashboardPage = () => {
     // fetchPeople();
   }
 
+  const onPersonDelete = async (personData: any) => {
+    console.log("PERSON TO DELETE DATAS")
+    console.log(personData)
+    await destroyPerson(personData);
+    // fetchPeople();
+  }
+
   return (
     <>
       foobarbaz
@@ -84,7 +91,7 @@ const DashboardPage = () => {
                       setSelectedEvent={setSelectedEvent}/>
         </TabsContent>
         <TabsContent value="people" className="w-full">
-          <PeopleDash people={people} onSubmit={onPersonSubmit}/>
+          <PeopleDash people={people} onSubmit={onPersonSubmit} onDelete={onPersonDelete}/>
         </TabsContent>
       </Tabs>
       </>

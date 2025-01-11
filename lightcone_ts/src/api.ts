@@ -62,6 +62,11 @@ export const updatePerson = async (person: any) => {
   const res = await authAxios().put(`/api/person/${person.id}`, person);
   return res.data;
 };
+
+export const destroyPerson = async (id: number) => {
+  const res = await authAxios().delete(`/api/person/${id}`);
+  return res.data;
+};
 // // Example usage
 // authAxios.get('/api/events')
 //   .then(response => {

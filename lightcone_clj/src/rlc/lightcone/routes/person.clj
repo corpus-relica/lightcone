@@ -16,25 +16,24 @@
          (with-auth #(response/response {:person {:id id}}))))
 
   (context "/api/person" []
+    ;; Create a person
     (POST "/" {body :body}
-          (with-auth (fn [token]  ; or just [%] if you prefer
-                       (tap> "CREATE PERSON")
-                       (tap> body)
+          (with-auth (fn [token]
                        (let [result (contacts/create-person token body)
                              person (:body result)]
-                         (tap> "CREATED PERSON")
-                         (tap> person)
                          (response/response {:person person})))))
 
+    ;; Update a person
     (PUT "/:id" {params :params body :body}
-          (with-auth (fn [auth-arg]
-                       (tap> "UPDATE PERSON")
-                       (tap> body)
+          (with-auth (fn [token]
                        (response/response {:person body}))))
 
+    ;; Delete a person
     (DELETE "/:id" [id]
-          (with-auth (fn [auth-arg]
-                       (tap> "DELETE PERSON")
+          (with-auth (fn [token]
+                       (tap> "DELETING PERSON")
                        (tap> id)
-                       (response/response {:person {:id id}}))))
+                       (let [result (contacts/delete-person token id)]
+                         (response/response result))
+                       )))
     ))
