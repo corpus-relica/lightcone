@@ -13,13 +13,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
-  const { people, /*loading,*/ fetchPeople } = usePeopleStore();
+  const { people, /*loading,*/ fetchPeople, createPerson, updatePerson } = usePeopleStore();
   const { events, /*loading,*/ fetchEvents } = useEventsStore();
 
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [foobarbaz, setFoobarbaz] = useState(null);
-  // const [events, setEvents] = useState([]);
-  // const [people, setPeople] = useState([]);
   const { logout} = useContext(AuthContext);
 
   useEffect(() => {
@@ -57,6 +55,17 @@ const DashboardPage = () => {
     setFoobarbaz(event);
   }, [selectedEvent]);
 
+  const onPersonSubmit = async (personData: any) => {
+    console.log("PERSON DATAS")
+    console.log(personData)
+    if(personData.uid === 0){
+      await createPerson(personData);
+    }else if(personData.uid > 0){
+      await updatePerson(personData);
+    }
+    // fetchPeople();
+  }
+
   return (
     <>
       foobarbaz
@@ -75,7 +84,7 @@ const DashboardPage = () => {
                       setSelectedEvent={setSelectedEvent}/>
         </TabsContent>
         <TabsContent value="people" className="w-full">
-          <PeopleDash people={people} />
+          <PeopleDash people={people} onSubmit={onPersonSubmit}/>
         </TabsContent>
       </Tabs>
       </>

@@ -67,12 +67,12 @@
     ;;         saved-event (calendar/update-event calendar-event)]
     ;;     (response/response {:event saved-event})))
 
-  (POST "/" {:keys [body]}
+  (POST "/api/event" {:keys [body]}
     (let [calendar-event (:event (keywordize-keys body))
           saved-event (calendar/create-event calendar-event)]
       (response/response {:event saved-event})))
 
-  (context "/:id" [id]
+  (context "/api/event/:id" [id]
     (PUT "/" {body :body}
       (let [event-id (Integer/parseInt id)
             calendar-update (:event (keywordize-keys body))

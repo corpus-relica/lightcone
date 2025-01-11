@@ -6,12 +6,12 @@ import PersonForm from "@/components/PersonForm";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
-const PeopleDash = ({ people }) => {
+const PeopleDash = ({ people, onSubmit }) => {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
-  const onSubmit = (data:any) => {
-    console.log("submit", data);
-  }
+  // const onSubmit = (data:any) => {
+  //   console.log("submit", data);
+  // }
 
   const selectPerson = (uid:number) => {
     const person = people.find((p:any) => p.id === uid);

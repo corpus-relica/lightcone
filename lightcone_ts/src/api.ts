@@ -7,6 +7,8 @@ const authAxios = () => axios.create({
   },
 });
 
+////////////////////////////////////////////////////////////////////// EVENTS //
+
 export const getEvents = async () => {
   const res = await authAxios().get('/api/events');
   return res.data;
@@ -42,11 +44,24 @@ export const setEventParticipants = async (id: number, participants: number[]) =
   return res.data;
 }
 
+/////////////////////////////////////////////////////////////////////// PEOPLE //
+
 export const getPeople = async () => {
   const res = await authAxios().get('/api/persons')
   return res.data.persons
 };
 
+export const createPerson = async (person: any) => {
+  const res = await authAxios().post('/api/person', person);
+  const newPerson = {id: res.data.person.uid,
+                     name: res.data.person.name}
+  return newPerson;
+};
+
+export const updatePerson = async (person: any) => {
+  const res = await authAxios().put(`/api/person/${person.id}`, person);
+  return res.data;
+};
 // // Example usage
 // authAxios.get('/api/events')
 //   .then(response => {
