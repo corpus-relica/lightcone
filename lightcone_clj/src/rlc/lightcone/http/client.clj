@@ -23,12 +23,18 @@
    (auth-get url token {}))
   ([url token {:keys [query-params transform-fn]
                :or {transform-fn identity}}]
+   (tap> "AUTH GET")
+   (tap> url)
+   (tap> token)
+   (tap> query-params)
    (try
      (let [request-options (merge default-options
                                 {:headers (make-auth-headers token)}
                                 (when query-params
                                   {:query-params query-params}))
            response (http/get url request-options)]
+       (tap> "AUTH GET RESPONSE")
+       (tap> response)
        (case (:status response)
          200 (response/response (transform-fn (:body response)))
          401 (response/status 401 {:error "Unauthorized"})
