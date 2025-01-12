@@ -15,7 +15,7 @@ export const getEvents = async () => {
 }
 
 export const createEvent = async (event: any) => {
-  const res = await authAxios().post('/api/events', event);
+  const res = await authAxios().post('/api/event', {event});
   return res.data;
 }
 

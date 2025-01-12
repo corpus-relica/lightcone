@@ -11,6 +11,21 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { X, Users, Calendar } from "lucide-react";
 
+import moment from 'moment';
+
+// Format the incoming ISO date string for the input
+const formatDateForInput = (isoString) => {
+  if (!isoString) return '';
+  return moment(isoString).format('YYYY-MM-DDTHH:mm');
+};
+
+// Convert the input value back to ISO format
+const formatDateForSubmission = (inputValue) => {
+  if (!inputValue) return null;
+  return moment(inputValue).toISOString();
+};
+
+
 const EventForm = ({ onSubmit, initialData = null, availableParticipants=[] }) => {
   const [title, setTitle] = useState(initialData?.title || '');
   const [date, setDate] = useState(initialData?.time || '');
@@ -45,6 +60,8 @@ const EventForm = ({ onSubmit, initialData = null, availableParticipants=[] }) =
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
+      // @ts-ignore
+      uid: initialData?.uid || 0,
       title,
       time: date,
       note,
@@ -84,8 +101,8 @@ const EventForm = ({ onSubmit, initialData = null, availableParticipants=[] }) =
             <div className="flex gap-2">
               <Input
                 type="datetime-local"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={formatDateForInput(date)}
+                onChange={(e) => setDate(formatDateForSubmission(e.target.value))}
                 className="flex-1"
               />
               <Button variant="outline" size="icon" type="button">

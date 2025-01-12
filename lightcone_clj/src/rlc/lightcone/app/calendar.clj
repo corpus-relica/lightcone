@@ -72,8 +72,8 @@
 
 (defn participant->involvement
   "Transform an attendee to an involvement tuple"
-  [participant]
-  (let [person-result (get-person-name participant)
+  [participant token]
+  (let [person-result (get-person-name participant token)
         person-name (:body person-result)]
     [involvement-as-participant-kind-ref
      {:uid participant ;; or retrieve from semantic model
@@ -88,18 +88,18 @@
 
 (defn location->involvement
   "Transform a location to an involvement tuple"
-  [location]
+  [location token]
   [location-of-an-occurrence-kind-ref
-   {:uid (reserve-uid 1) ;; or retrieve as special aspect of some physical object in the semantic model
+   {:uid (reserve-uid 1 token) ;; or retrieve as special aspect of some physical object in the semantic model
     :name location
     :nature :individual
     :kind-ref spacial-aspect-kind-ref}])
 
 (defn note->aspect
   "Transform a note to an aspect tuple"
-  [event-title note]
+  [event-title note token]
   [possession-of-aspect-kind-ref
-   {:uid (first (reserve-uid 1)) ;; or retrieve as special aspect of some physical object in the semantic model
+   {:uid (first (reserve-uid 1 token)) ;; or retrieve as special aspect of some physical object in the semantic model
     :name (str "Note for " event-title)
     :nature :individual
     :aspect-nature :qualitative
@@ -109,11 +109,11 @@
 ;; Transform functions between domains
 (defn calendar->clarity
   "Transform calendar event to clarity model"
-  [{:keys [event-type title time note uid] :as event}]
+  [{:keys [event-type title time note uid] :as event} token]
   (tap> "CALENDAR->CLARITY")
   (tap> [event-type title time note uid])
   (tap> (:participants event))
-  (let [reserved-uids (reserve-uid 2)
+  (let [reserved-uids (reserve-uid 2 token)
         event-uid (if (> uid 100) uid (first reserved-uids))
         point-uid (second reserved-uids)]
     (tap> "RESERVED UIDS")
@@ -126,12 +126,12 @@
      :is-the-case-at (->point-in-time time point-uid event-uid)
      :involved (cond-> []
                  (:participants event)
-                 (into (map participant->involvement (:participants event)))
+                 (into (map #(participant->involvement % token)  (:participants event)))
                  (:location event)
-                 (conj (location->involvement (:location event))))
+                 (conj (location->involvement (:location event) token)))
      :aspects (cond-> []
                 (:note event)
-                (conj (note->aspect title (:note event))))}))
+                (conj (note->aspect title (:note event) token)))}))
 
 (defn clarity->calendar
   "Transform clarity model to calendar event"
@@ -229,7 +229,7 @@
                                    :rh-object-name note-name}])]
     gellish-note-relations))
 
-(defn save-to-storage [clarity-event]
+(defn save-to-storage [clarity-event token]
   ;; Save to your storage
   ;; For example, a vector in an atom
   (tap> "SAVE TO STORAGE")
@@ -258,7 +258,7 @@
                               [gellish-possession-of-point-in-time-relation]
                               gellish-participation-relations
                               gellish-note-relations)
-        result (submit-binary-facts gellish-facts)]
+        result (submit-binary-facts gellish-facts token)]
     (tap> "GELLISH EVENT")
     (tap> gellish-facts)
     ;; (tap> "SAVE EVENT")
@@ -346,33 +346,33 @@
     (tap> (assoc event :time time :participants participants :note note))
     (assoc event :time time :participants participants :note note)))
 
-(defn create-event [calendar-event]
+(defn create-event [calendar-event token]
   (tap> "CREATE EVENT")
   (tap> calendar-event)
 
   ;; Transform simple calendar event to your model
   (let [clarity-event (-> calendar-event
-                          calendar->clarity)]
+                          (calendar->clarity token))]
     (tap> "CLAIRTY EVENT")
     (tap> clarity-event)
-    (save-to-storage clarity-event)
+    (save-to-storage clarity-event token)
     ;; Return a simplified view for the UI
     (clarity->calendar clarity-event)))
 
-(defn update-event [id calendar-update]
+(defn update-event [id calendar-update token]
   (tap> "UPDATE EVENT")
   (tap> [id calendar-update])
 
   ;; Transform simple calendar event to your model
-  (let [calendar-event (fetch-event id)
+  (let [calendar-event (fetch-event id token)
         _ (tap> "CALENDAR EVENT")
         _ (tap> calendar-event)
         updated-event (-> calendar-event
                           (merge calendar-update)
-                          calendar->clarity)
+                          (calendar->clarity token))
         _ (tap> "UPDATED EVENT")
         _ (tap> updated-event)
-        foobar (get-event-time id)
+        foobar (get-event-time id token)
         facts-to-delete (map (fn [fact]
                                (:fact_uid fact))
                              (:body foobar))
@@ -403,11 +403,11 @@
 
 (defn update-event-note
   "Update the note of an event"
-  [event-id note]
+  [event-id note token]
   (tap> "************************************************************  UPDATE EVENT NOTE")
   (tap> [event-id note])
 
-  (let [event-note (get-event-note event-id)
+  (let [event-note (get-event-note event-id token)
         fact-uid (-> event-note :body second :fact_uid)
         _ (tap> "EVENT NOTE FACT!!!!")
         _ (tap> fact-uid)
@@ -416,12 +416,12 @@
     (tap> result)
     result))
 
-(defn update-event-field [event-id field value]
+(defn update-event-field [event-id field value token]
   (tap> "UPDATE EVENT FIELD")
   (tap> [event-id field value])
 
   (let [result (post-blanket-rename event-id value)
-        event (get-event event-id)]
+        event (get-event event-id token)]
     (tap> "RESULT")
     (tap> result)
     (tap> "EVENT")
@@ -433,9 +433,9 @@
  ;;   updated)
   )
 
-(defn update-event-participants [event-id field value]
+(defn update-event-participants [event-id field value token]
   (let [target-participiants (set value)
-        model-participants (set (:body (get-event-participants event-id)))
+        model-participants (set (:body (get-event-participants event-id token)))
         participant-ids-to-add (clojure.set/difference target-participiants model-participants)
         participant-ids-to-remove (clojure.set/difference model-participants target-participiants)
         added-participants (add-participants event-id participant-ids-to-add)
@@ -464,5 +464,5 @@
   id)
 
 (comment
-  (tap> (calendar->clarity some-event))
-  (s/explain :rlc.clarity.occurrence/occurrence (calendar->clarity some-event)))
+  (tap> (calendar->clarity some-event token))
+  (s/explain :rlc.clarity.occurrence/occurrence (calendar->clarity some-event token)))

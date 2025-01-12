@@ -5,12 +5,18 @@
             [clojure.data.json :as json]
             [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL]]))
 
-(defn reserve-uid [n]
+
+(defn reserve-uid [n token]
+  (tap> "RESERVING UID")
   (try
     (let [response (http/get (str ARCHIVIST_SERVICE_URL "/uid/reserve-uid")
                              {:query-params {:n n}
                               :throw-exceptions false
-                              :as :json})]
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}
+                              })]
+      (tap> "RESERVED UID")
+      (tap> response)
       (case (:status response)
         200 (:body response)
         404 (response/not-found {:error "No UIDs found"
@@ -39,7 +45,7 @@
                           :else v))))
              {} m))
 
-(defn submit-binary-facts [facts]
+(defn submit-binary-facts [facts token]
   (try
     (tap> "FACTS!!!!!!!!!!!!")
     (let [transformed-facts (map transform-keys facts)  ;; Transform before serializing
@@ -48,7 +54,8 @@
                               {:body (json/write-str transformed-facts)
                                :content-type :json
                                :throw-exceptions false
-                               :as :json})]
+                               :as :json
+                               :headers {"Authorization" (str "Bearer " token)}})]
       (case (:status response)
         200 (:body response)
         201 (:body response)

@@ -6,7 +6,7 @@ import Timeline from "@/components/Timeline";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 
-const EventsDash = ({events, selectedEvent, people, setSelectedEventUID}) =>{
+const EventsDash = ({events, selectedEvent, people, setSelectedEventUID, onSubmit, onDelete}) =>{
   // const [selectedEvent, setSelectedEvent] = useState(null);
 
   // const selectEvent = (uid:number) => {
@@ -50,7 +50,7 @@ const EventsDash = ({events, selectedEvent, people, setSelectedEventUID}) =>{
                 <div className="bg-card h-full rounded p-4">
                   <EventForm initialData={selectedEvent}
                               availableParticipants={people}
-                              onSubmit={(data:any)=>{console.log("SUBMIT OCCURRED -->", data)}}/>
+                              onSubmit={onSubmit}/>
                 </div>
               </div>
             </div>

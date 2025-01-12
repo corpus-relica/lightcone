@@ -13,10 +13,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
-  const { people, /*loading,*/ fetchPeople, createPerson, updatePerson, destroyPerson } = usePeopleStore();
+  const { people,
+          // loading,
+          fetchPeople,
+          createPerson,
+          updatePerson,
+          destroyPerson } = usePeopleStore();
   const { events,
-          /*loading,*/
-          fetchEvents } = useEventsStore();
+          //loading,
+          fetchEvents, 
+          createEvent,
+          updateEvent,
+          destroyEvent} = useEventsStore();
 
   const [selectedEventUID, setSelectedEventUID] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -79,6 +87,24 @@ const DashboardPage = () => {
     // fetchPeople();
   }
 
+  const onEventSubmit = async (eventData: any) => {
+    console.log("EVENT DATAS")
+    console.log(eventData)
+    if(eventData.uid === 0){
+      await createEvent(eventData);
+    }else if(eventData.uid > 0){
+      await updateEvent(eventData);
+    }
+    // fetchEvents();
+  }
+
+  const onEventDelete = async (eventData: any) => {
+    console.log("EVENT TO DELETE DATAS")
+    console.log(eventData)
+    // await destroyEvent(eventData);
+    // fetchEvents();
+  }
+
   return (
     <>
       foobarbaz
@@ -94,10 +120,14 @@ const DashboardPage = () => {
           <EventsDash events={events}
                       selectedEvent={selectedEvent}
                       people={people}
+                      onSubmit={onEventSubmit}
+                      onDelete={onEventDelete}
                       setSelectedEventUID={setSelectedEventUID}/>
         </TabsContent>
         <TabsContent value="people" className="w-full">
-          <PeopleDash people={people} onSubmit={onPersonSubmit} onDelete={onPersonDelete}/>
+          <PeopleDash people={people}
+                      onSubmit={onPersonSubmit}
+                      onDelete={onPersonDelete}/>
         </TabsContent>
       </Tabs>
       </>

@@ -67,16 +67,22 @@
     ;;         saved-event (calendar/update-event calendar-event)]
     ;;     (response/response {:event saved-event})))
 
-  (POST "/api/event" {:keys [body]}
-    (let [calendar-event (:event (keywordize-keys body))
-          saved-event (calendar/create-event calendar-event)]
+  (POST "/api/event" request
+    (let [token (extract-token request)
+          body (:body request)
+          calendar-event (:event (keywordize-keys body))
+          _(tap> "CREATE EVENT, SUCCUSSFULLY CREATED CALENDAR EVENT:")
+          _(tap> calendar-event)
+          saved-event (calendar/create-event calendar-event token)]
       (response/response {:event saved-event})))
 
   (context "/api/event/:id" [id]
-    (PUT "/" {body :body}
-      (let [event-id (Integer/parseInt id)
+    (PUT "/" request
+      (let [token (extract-token request)
+            body (:body request)
+            event-id (Integer/parseInt id)
             calendar-update (:event (keywordize-keys body))
-            saved-event (calendar/update-event event-id calendar-update)]
+            saved-event (calendar/update-event event-id calendar-update token)]
         (response/response saved-event)))
 
     (DELETE "/" []
