@@ -29,7 +29,13 @@ const EventForm = ({ onSubmit, initialData = null, availableParticipants=[] }) =
       setDate(initialData.time);
       setNote(initialData.note);
       setParticipants(initialData.participants);
+    }else{
+      setTitle('');
+      setDate('');
+      setNote('');
+      setParticipants([]);
     }
+
   }, [initialData]);
 
   const removeParticipant = (idToRemove) => {

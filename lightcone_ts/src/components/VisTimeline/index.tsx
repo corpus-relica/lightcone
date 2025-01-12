@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Timeline, DataSet } from 'vis-timeline/standalone';
 import 'vis-timeline/styles/vis-timeline-graph2d.css';
 
-const VisTimeline = ({ items: initialItems, groups: initialGroups, options = {}, setSelectedEvent = ()=>{} }) => {
+const VisTimeline = ({ items: initialItems, groups: initialGroups, options = {}, setSelectedEventUID = (uid: number)=>{}}) => {
   const containerRef = useRef(null);
   const timelineRef = useRef(null);
 
@@ -43,7 +43,7 @@ const VisTimeline = ({ items: initialItems, groups: initialGroups, options = {},
       // Example event listeners
       timelineRef.current.on('select', (properties) => {
         console.log('Selected items:', properties.items);
-        setSelectedEvent(properties.items);
+        setSelectedEventUID(properties.items[0]);
       });
 
       timelineRef.current.on('rangechanged', (properties) => {

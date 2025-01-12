@@ -7,15 +7,17 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import { Button } from "@/components/ui/button";
+
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 const EventsList = (props) => {
-  const { events } = props;
+  const { events, onSelect, clearSelection } = props;
 
   const renderEvents = () => {
     return events.map((event) => {
       return (
-        <div key={event.uid}>
+        <div key={event.uid} onClick={()=>{console.log('SELECT FOO', event); onSelect(event.uid)}}>
           <h3>{event.title}</h3>
           <p>{event.time}</p>
         </div>
@@ -26,6 +28,9 @@ const EventsList = (props) => {
   return (
     <ScrollArea className="h-[calc(100%-57px)]">
       <div className="p-4 space-y-2">
+        <Button type="submit" className="w-full" onClick={()=>{clearSelection()}}>
+          Add Event
+        </Button>
         {renderEvents()}
       </div>
     </ScrollArea>

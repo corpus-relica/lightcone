@@ -14,9 +14,13 @@ import { Button } from "@/components/ui/button";
 
 const DashboardPage = () => {
   const { people, /*loading,*/ fetchPeople, createPerson, updatePerson, destroyPerson } = usePeopleStore();
-  const { events, /*loading,*/ fetchEvents } = useEventsStore();
+  const { events,
+          /*loading,*/
+          fetchEvents } = useEventsStore();
 
+  const [selectedEventUID, setSelectedEventUID] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
+
   const [foobarbaz, setFoobarbaz] = useState(null);
   const { logout} = useContext(AuthContext);
 
@@ -48,12 +52,14 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    const uid = selectedEvent && selectedEvent[0];
-    const event = uid && events.find((e:any) => e.uid === uid);
-
-    console.log("Selected Event: ", event);
-    setFoobarbaz(event);
-  }, [selectedEvent]);
+    const uid = selectedEventUID ;
+    if(uid === null){
+      setSelectedEvent(null);
+    }else{
+      const event = uid && events.find((e:any) => e.uid === uid);
+      setSelectedEvent(event);
+    }
+  } , [selectedEventUID]);
 
   const onPersonSubmit = async (personData: any) => {
     console.log("PERSON DATAS")
@@ -86,9 +92,9 @@ const DashboardPage = () => {
         </TabsList>
         <TabsContent value="events">
           <EventsDash events={events}
-                      foobarbaz={foobarbaz}
+                      selectedEvent={selectedEvent}
                       people={people}
-                      setSelectedEvent={setSelectedEvent}/>
+                      setSelectedEventUID={setSelectedEventUID}/>
         </TabsContent>
         <TabsContent value="people" className="w-full">
           <PeopleDash people={people} onSubmit={onPersonSubmit} onDelete={onPersonDelete}/>

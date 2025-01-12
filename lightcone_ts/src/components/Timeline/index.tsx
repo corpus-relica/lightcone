@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react';
 import VisTimeline from '@/components/VisTimeline';
 
 const Timeline = (props) => {
-  const { events, setSelectedEvent} = props;
+  const { events, setSelectedEventUID} = props;
   const [eventItems, setEventItems] = useState([]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const Timeline = (props) => {
           items={eventItems}
           groups={groups}
           options={options}
-          setSelectedEvent={setSelectedEvent}
+          setSelectedEventUID={setSelectedEventUID}
         />
       ) : null}
     </div>
