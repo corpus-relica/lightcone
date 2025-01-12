@@ -23,7 +23,7 @@
    (auth-get url token {}))
   ([url token {:keys [query-params transform-fn]
                :or {transform-fn identity}}]
-   (tap> "AUTH GET")
+   (tap> (str "AUTH GET - "url))
    (tap> url)
    (tap> token)
    (tap> query-params)
@@ -33,7 +33,7 @@
                                 (when query-params
                                   {:query-params query-params}))
            response (http/get url request-options)]
-       (tap> "AUTH GET RESPONSE")
+       (tap> (str "AUTH GET RESPONSE - "url))
        (tap> response)
        (case (:status response)
          200 (response/response (transform-fn (:body response)))
