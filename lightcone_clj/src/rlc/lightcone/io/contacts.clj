@@ -4,6 +4,7 @@
             ;; [clojure.tools.logging :as log]
             [rlc.lightcone.env :refer [ARCHIVIST_SERVICE_URL
                                        CLARITY_SERVICE_URL]]
+            [rlc.lightcone.io.archivist :refer [post-blanket-rename]]
             [rlc.lightcone.http.client :as client]))
 
 ;;  TODO this namespace probably belongs under app
@@ -47,10 +48,12 @@
                         :name (:lh_object_name fact)}))}))
 
 (defn update-person [token body]
-  (client/auth-put
-    (str ARCHIVIST_SERVICE_URL "/fact")
-    token
-    body))
+  (tap> "UPDATING PERSON @ CLARITY")
+  (tap> body)
+  (let [res (post-blanket-rename (:uid body) (:name body) token)]
+    {:id (:lh_object_uid (first res))
+     :name (:lh_object_name (first res))}
+    ))
 
 (defn delete-person [token uid]
   (tap> "DELETING PERSON @ CLARITY")

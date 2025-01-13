@@ -195,14 +195,15 @@
 (defn remove-participants [event-uid person-uids]
   (doall (map #(remove-participant event-uid %) person-uids)))
 
-(defn post-blanket-rename [uid new-name]
+(defn post-blanket-rename [uid new-name token]
   (try
     (let [response (http/put (str ARCHIVIST_SERVICE_URL "/submission/blanketRename")
                              {:body (json/write-str {:entity_uid uid
                                                      :name new-name})
                               :content-type :json
                               :throw-exceptions false
-                              :as :json})]
+                              :as :json
+                              :headers {"Authorization" (str "Bearer " token)}})]
       (case (:status response)
         200 (:body response)
         404 (response/not-found {:error "No event found"

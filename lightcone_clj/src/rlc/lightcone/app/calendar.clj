@@ -420,7 +420,7 @@
   (tap> "UPDATE EVENT FIELD")
   (tap> [event-id field value])
 
-  (let [result (post-blanket-rename event-id value)
+  (let [result (post-blanket-rename event-id value token)
         event (get-event event-id token)]
     (tap> "RESULT")
     (tap> result)

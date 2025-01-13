@@ -6,10 +6,10 @@
             [ring.middleware.cors :refer [wrap-cors]]
             [portal.api :as p]
 
-[rlc.lightcone.io.auth :refer [authenticate-user
-                                        generate-token
-                                        db-get-user-by-username
-                                        create-user]]
+            [rlc.lightcone.io.auth :refer [authenticate-user
+                                           generate-token
+                                           db-get-user-by-username
+                                           create-user]]
             ))
 
 ;; Add middleware in the correct order

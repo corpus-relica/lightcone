@@ -26,7 +26,8 @@
     ;; Update a person
     (PUT "/:id" {params :params body :body}
           (with-auth (fn [token]
-                       (response/response {:person body}))))
+                        (let [result (contacts/update-person token body)]
+                          (response/response result)))))
 
     ;; Delete a person
     (DELETE "/:id" [id]
